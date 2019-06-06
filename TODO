@@ -1,0 +1,2 @@
+implement disassemble() in assembly.c:
+objdump -D -b binary -m i386:x86-64 -M intel /dev/stdin

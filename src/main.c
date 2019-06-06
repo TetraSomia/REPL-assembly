@@ -1,7 +1,8 @@
 #include <stdio.h>
+#include "test.h"
 
 int main()
 {
-  puts("ok");
+  test_assembly();
   return 0;
 }

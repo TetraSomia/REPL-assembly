@@ -10,9 +10,14 @@ CFLAGS	+=	-I$(INC)	\
 
 LDFLAGS	+=
 
-SRC	=	./src/
+SRC_ROOT	=	./src/
 
-SRCS	=	$(SRC)main.c
+SRC_TEST	=	./src/test/
+
+SRCS	=	$(SRC_ROOT)main.c	\
+		$(SRC_ROOT)utils.c	\
+		$(SRC_ROOT)assembly.c	\
+		$(SRC_TEST)assembly.c
 
 OBJS	=	$(SRCS:.c=.o)
 
