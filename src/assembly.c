@@ -77,6 +77,9 @@ int assemble(const char *inst, uint8_t **bytecode, size_t *bytecode_size) {
   char content[sizeof(header) + strlen(inst) + 1];
   bool need_reset = false;
 
+  if (inst == NULL || strlen(inst) == 0 ||
+      bytecode == NULL || bytecode_size == NULL)
+    fatal_err("assemble() received bad argument\n");
   if (_fd_tmpfile == -1)
     _init_tmpfile();
   else
