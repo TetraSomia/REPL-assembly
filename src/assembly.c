@@ -58,6 +58,18 @@ static void _write_to_file(bool need_reset, const uint8_t *data, size_t size) {
       fatal_libc_err("ftruncate() failed on temporary file\n");
 }
 
+static void _remove_objdump_header(char *inst) {
+  size_t nbr_line_to_remove = 7;
+  size_t begin_idx = 0;
+
+  for (size_t i = 0; i < nbr_line_to_remove; ++i) {
+    while (inst[begin_idx] != '\0' && inst[begin_idx++] != '\n');
+    if (inst[begin_idx] == '\0')
+      fatal_err("ASSERT FAILED: objdump header seems to have changed size\n");
+  }
+  memmove(inst, inst + begin_idx, strlen(inst + begin_idx) + 1);
+}
+
 int assemble(const char *inst, uint8_t **bytecode, size_t *bytecode_size) {
   const char cmd_fmt[] = "nasm -Werror -w+all -s -a -fbin -o /dev/stdout %s";
   const char header[] = "[BITS 64]\n";
@@ -69,10 +81,29 @@ int assemble(const char *inst, uint8_t **bytecode, size_t *bytecode_size) {
     _init_tmpfile();
   else
     need_reset = true;
-  sprintf(cmd, cmd_fmt, _path_tmpfile);
   strcpy(content, header);
   strcat(content, inst);
   strcat(content, "\n");
   _write_to_file(need_reset, (uint8_t*)content, sizeof(content) - 1);
+  sprintf(cmd, cmd_fmt, _path_tmpfile);
   return _exec_popen(cmd, bytecode, bytecode_size);
+}
+
+void disassemble(const uint8_t *bytecode, size_t bytecode_size, char **inst) {
+  const char cmd_fmt[] = "objdump -D -b binary -m i386:x86-64 -M intel %s";
+  char cmd[sizeof(cmd_fmt) + sizeof(_path_tmpfile)];
+  bool need_reset = false;
+  size_t output_size;
+
+  if (bytecode == NULL || bytecode_size == 0 || inst == NULL)
+    fatal_err("disassemble() received bad argument\n");
+  if (_fd_tmpfile == -1)
+    _init_tmpfile();
+  else
+    need_reset = true;
+  _write_to_file(need_reset, bytecode, bytecode_size);
+  sprintf(cmd, cmd_fmt, _path_tmpfile);
+  if (_exec_popen(cmd, (uint8_t**)inst, &output_size) != 0)
+    fatal_err("ASSERT FAILED: objdump shouldn't return error code\n");
+  _remove_objdump_header(*inst);
 }

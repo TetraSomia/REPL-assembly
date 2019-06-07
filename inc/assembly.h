@@ -16,7 +16,7 @@
 int assemble(const char *inst, uint8_t **bytecode, size_t *bytecode_size);
 
 /*
-** To implement
+** Do the opposite of 'assemble' function using objdump
 */
 
-//int disassemble();
+void disassemble(const uint8_t *bytecode, size_t bytecode_size, char **inst);
