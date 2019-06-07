@@ -7,26 +7,19 @@
 #include <fcntl.h>
 #include "assembly.h"
 
-static const char _path_assembler[] = ".nasmtmp";
-static int _fd_assembler = -1;
+static const char _path_tmpfile[] = ".assemblytmp";
+static int _fd_tmpfile = -1;
 
-static void _cleanup_tmp_assembler(void) {
-  close(_fd_assembler);
-  remove(_path_assembler);
+static void _cleanup_tmpfile(void) {
+  close(_fd_tmpfile);
+  remove(_path_tmpfile);
 }
 
-static void _init_tmpfile(const char *path, int *fd_ptr) {
-  *fd_ptr = open(path, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
-  if (*fd_ptr == -1)
-    fatal_libc_err("open() failed on temporary file: %s\n", path);
-  atexit(&_cleanup_tmp_assembler);
-}
-
-static void _reset_offset(int fd) {
-  if (ftruncate(fd, 0) == -1)
-    fatal_libc_err("ftruncate() failed on temporary file\n");
-  if (lseek(fd, 0, SEEK_SET) == (off_t) -1)
-    fatal_libc_err("lseek() failed on temporary file\n");
+static void _init_tmpfile() {
+  _fd_tmpfile = open(_path_tmpfile, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+  if (_fd_tmpfile == -1)
+    fatal_libc_err("open() failed on temporary file\n");
+  atexit(&_cleanup_tmpfile);
 }
 
 static int _exec_popen(const char *cmd, uint8_t **data, size_t *size) {
@@ -51,19 +44,35 @@ static int _exec_popen(const char *cmd, uint8_t **data, size_t *size) {
   int ret = pclose(read_pipe);
   if (ret == -1)
     fatal_libc_err("pclose() failed\n", cmd);
-  (*data)[*size] = '\0';
+  (*data)[*size] = '\0'; // To allow interpretation of '*data' as a string
   return ret == 0 ? 0 : 1;
+}
+
+static void _write_to_file(bool need_reset, const uint8_t *data, size_t size) {
+  if (need_reset)
+    if (lseek(_fd_tmpfile, 0, SEEK_SET) == (off_t) -1)
+      fatal_libc_err("lseek() failed on temporary file\n");
+  write(_fd_tmpfile, data, size);
+  if (need_reset)
+    if (ftruncate(_fd_tmpfile, size) == -1)
+      fatal_libc_err("ftruncate() failed on temporary file\n");
 }
 
 int assemble(const char *inst, uint8_t **bytecode, size_t *bytecode_size) {
   const char cmd_fmt[] = "nasm -Werror -w+all -s -a -fbin -o /dev/stdout %s";
-  char cmd[sizeof(cmd_fmt) + sizeof(_path_assembler)];
+  const char header[] = "[BITS 64]\n";
+  char cmd[sizeof(cmd_fmt) + sizeof(_path_tmpfile)];
+  char content[sizeof(header) + strlen(inst) + 1];
+  bool need_reset = false;
 
-  if (_fd_assembler == -1)
-    _init_tmpfile(_path_assembler, &_fd_assembler);
+  if (_fd_tmpfile == -1)
+    _init_tmpfile();
   else
-    _reset_offset(_fd_assembler);
-  sprintf(cmd, cmd_fmt, _path_assembler);
-  dprintf(_fd_assembler, "[BITS 64]\n%s\n", inst);
+    need_reset = true;
+  sprintf(cmd, cmd_fmt, _path_tmpfile);
+  strcpy(content, header);
+  strcat(content, inst);
+  strcat(content, "\n");
+  _write_to_file(need_reset, (uint8_t*)content, sizeof(content) - 1);
   return _exec_popen(cmd, bytecode, bytecode_size);
 }
