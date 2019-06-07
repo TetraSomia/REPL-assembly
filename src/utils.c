@@ -34,7 +34,7 @@ void *xmalloc(size_t size)
 
   ptr = malloc(size);
   if (ptr == NULL)
-    fatal_err("malloc");
+    fatal_libc_err("malloc() failed");
   return ptr;
 }
 
@@ -42,6 +42,6 @@ void *xrealloc(void *ptr, size_t size)
 {
   ptr = realloc(ptr, size);
   if (ptr == NULL)
-    fatal_err("realloc");
+    fatal_libc_err("realloc() failed");
   return ptr;
 }
