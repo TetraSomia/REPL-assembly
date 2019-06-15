@@ -17,7 +17,9 @@ SRC_TEST	=	./src/test/
 SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_ROOT)utils.c	\
 		$(SRC_ROOT)assembly.c	\
-		$(SRC_TEST)assembly.c
+		$(SRC_TEST)assembly.c	\
+		$(SRC_ROOT)init.c	\
+		$(SRC_ROOT)repl.c
 
 OBJS	=	$(SRCS:.c=.o)
 
