@@ -1,4 +1,5 @@
 repl-asm
+vgcore.*
 
 # Prerequisites
 *.d

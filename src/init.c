@@ -9,8 +9,9 @@ s_context context;
 static int _pagesize;
 
 static void _free_context() {
-  munmap(context.units[0].code, _pagesize);
   free(context.units[0].name);
+  munmap(context.units[0].code, _pagesize);
+  rm_instructions(&context.units[0]);
   free(context.units);
 }
 
@@ -25,5 +26,6 @@ void init_context() {
 			       MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
   context.units[0].code_size = 0;
   context.units[0].insts = NULL;
+  add_instruction(&context.units[0], NULL, "ret");
   atexit(&_free_context);
 }

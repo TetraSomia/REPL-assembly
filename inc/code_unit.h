@@ -22,3 +22,8 @@ typedef	struct {
   size_t code_size;
   s_code_instrution *insts;
 } s_code_unit;
+
+int add_instruction(s_code_unit *unit, s_code_instrution *prev_inst,
+		    const char *inst);
+int rm_instruction(s_code_instrution *inst);
+void rm_instructions(s_code_unit *code_unit);
