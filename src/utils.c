@@ -5,8 +5,7 @@
 #include <string.h>
 #include "utils.h"
 
-void fatal_err(const char *fmt, ...)
-{
+void fatal_err(const char *fmt, ...) {
   va_list arglist;
 
   va_start(arglist, fmt);
@@ -15,8 +14,7 @@ void fatal_err(const char *fmt, ...)
   exit(1);
 }
 
-void fatal_libc_err(const char *fmt, ...)
-{
+void fatal_libc_err(const char *fmt, ...) {
   va_list arglist;
   int error = errno;
 
@@ -28,20 +26,27 @@ void fatal_libc_err(const char *fmt, ...)
 }
 
 
-void *xmalloc(size_t size)
-{
+void *xmalloc(size_t size) {
   void *ptr;
 
   ptr = malloc(size);
   if (ptr == NULL)
-    fatal_libc_err("malloc() failed");
+    fatal_libc_err("malloc() failed\n");
   return ptr;
 }
 
-void *xrealloc(void *ptr, size_t size)
-{
+void *xrealloc(void *ptr, size_t size) {
   ptr = realloc(ptr, size);
   if (ptr == NULL)
-    fatal_libc_err("realloc() failed");
+    fatal_libc_err("realloc() failed\n");
   return ptr;
+}
+
+char *xstrdup(const char *s) {
+  char *dup;
+
+  dup = strdup(s);
+  if (dup == NULL)
+    fatal_libc_err("strdup() failed\n");
+  return dup;
 }

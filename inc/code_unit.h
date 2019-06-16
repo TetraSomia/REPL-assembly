@@ -6,10 +6,12 @@
 
 typedef struct _s_code_instrution {
   uint8_t opcodes[MAX_INST_SIZE];
-  size_t inst_size;
-  char *inst_name;
+  size_t size;
+  char *str_gen;
+  char *str_input;
   char *label;
   uint8_t *address;
+  int index;
   bool breakpoint;
   struct _s_code_instrution *next;
 } s_code_instrution;
