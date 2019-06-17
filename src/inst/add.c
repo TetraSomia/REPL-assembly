@@ -32,5 +32,6 @@ int add_instruction(s_code_unit *unit, s_code_instruction *prev_inst,
   for (s_code_instruction *i = new_inst; i->next ; i = i->next)
     i->next->index = i->index + 1;
   err = commit_code(unit);
+  // TODO if err, unlink ?
   return err;
 }
