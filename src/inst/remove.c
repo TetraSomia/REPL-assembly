@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "code_unit.h"
 
-static void _free_inst_content_and_self(s_code_instrution *inst) {
+static void _free_inst_content_and_self(s_code_instruction *inst) {
   free(inst->str_gen);
   free(inst->str_input);
   if (inst->label)
@@ -9,15 +9,15 @@ static void _free_inst_content_and_self(s_code_instrution *inst) {
   free(inst);
 }
 
-int rm_instruction(s_code_instrution *inst) {
+int rm_instruction(s_code_instruction *inst) {
   (void)inst;
   //TODO implement
   return 0;
 }
 
 void rm_instructions(s_code_unit *code_unit) {
-  s_code_instrution *inst;
-  s_code_instrution *next_inst;
+  s_code_instruction *inst;
+  s_code_instruction *next_inst;
 
   code_unit->code_size = 0;
   inst = code_unit->insts;

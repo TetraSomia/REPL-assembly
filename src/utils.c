@@ -50,3 +50,7 @@ char *xstrdup(const char *s) {
     fatal_libc_err("strdup() failed\n");
   return dup;
 }
+
+void clear_term() {
+  printf("\e[1;1H\e[2J");
+}

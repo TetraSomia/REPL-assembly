@@ -4,7 +4,7 @@
 
 #define MAX_INST_SIZE 15
 
-typedef struct _s_code_instrution {
+typedef struct _s_code_instruction {
   uint8_t opcodes[MAX_INST_SIZE];
   size_t size;
   char *str_gen;
@@ -13,17 +13,17 @@ typedef struct _s_code_instrution {
   uint8_t *address;
   int index;
   bool breakpoint;
-  struct _s_code_instrution *next;
-} s_code_instrution;
+  struct _s_code_instruction *next;
+} s_code_instruction;
 
 typedef	struct {
   char *name;
   uint8_t *code;
   size_t code_size;
-  s_code_instrution *insts;
+  s_code_instruction *insts;
 } s_code_unit;
 
-int add_instruction(s_code_unit *unit, s_code_instrution *prev_inst,
+int add_instruction(s_code_unit *unit, s_code_instruction *prev_inst,
 		    const char *inst);
-int rm_instruction(s_code_instrution *inst);
+int rm_instruction(s_code_instruction *inst);
 void rm_instructions(s_code_unit *code_unit);

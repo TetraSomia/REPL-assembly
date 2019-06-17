@@ -26,7 +26,8 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_ROOT)repl.c	\
 		$(SRC_CMD)help.c	\
 		$(SRC_INST)add.c	\
-		$(SRC_INST)remove.c
+		$(SRC_INST)remove.c	\
+		$(SRC_INST)commit.c
 
 OBJS	=	$(SRCS:.c=.o)
 

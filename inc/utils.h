@@ -19,3 +19,10 @@ void fatal_libc_err(const char *fmt, ...); // same but uses errno
 void *xrealloc(void *ptr, size_t size);
 void *xmalloc(size_t size);
 char *xstrdup(const char *s);
+
+/*
+** Term utils
+*/
+
+void clear_term();
+
