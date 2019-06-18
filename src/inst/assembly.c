@@ -96,11 +96,11 @@ static int _read_assembly(s_code_unit *unit) {
 }
 
 static s_parsed_inst *_parse_disassembled_line(s_parsed_inst *insts,
-					       char *line, int line_nbr) {
+					       const char *line, int line_nbr) {
   insts = xrealloc(insts, sizeof(s_parsed_inst) * (line_nbr + 2));
   insts[line_nbr + 1].offset = -1;
   insts[line_nbr + 1].inst = NULL;
-  insts[line_nbr].inst = malloc(strlen(line) + 1);
+  insts[line_nbr].inst = xmalloc(strlen(line) + 1);
   sscanf(line, "%d: %[^\n]", &insts[line_nbr].offset, insts[line_nbr].inst);
   return insts;
 }
@@ -125,7 +125,7 @@ static s_parsed_inst * _disassemble() {
     line_nbr++;
     if (line_nbr < header_size)
       continue;
-    insts = _parse_disassembled_line(insts, line, header_size - line_nbr);
+    insts = _parse_disassembled_line(insts, line, line_nbr - header_size);
   }
   if (errno != 0)
     fatal_libc_err("getline() on popen() failed\n");

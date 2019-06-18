@@ -8,7 +8,7 @@ static s_code_instruction *_create_inst(const s_code_instruction *prev_inst,
 
   new = xmalloc(sizeof(s_code_instruction));
   new->size = 0;
-  new->str_gen = xstrdup("");
+  new->str_gen = NULL;
   new->str_input = xstrdup(inst);
   new->label = NULL;
   new->address = NULL;
