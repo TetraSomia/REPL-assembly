@@ -28,6 +28,5 @@ void init_context() {
   context.units[0].code_max_size = pagesize;
   context.units[0].insts = NULL;
   add_instruction(&context.units[0], NULL, "ret");
-  add_instruction(&context.units[0], NULL, "mov rax, 0xdeadbeef");
   atexit(&_free_context);
 }

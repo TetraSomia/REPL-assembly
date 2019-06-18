@@ -23,6 +23,14 @@ static void _update_insts(s_code_unit *unit,
     fatal_err("Assert failed: number of insts and parsed_insts does not match");
 }
 
+static void _reset_breakpoints(s_code_unit *unit) {
+  const uint8_t int3 = 0xCC;
+  
+  for (s_code_instruction *inst = unit->insts; inst; inst = inst->next)
+    if (inst->breakpoint)
+      *(inst->address) = int3;
+}
+
 int commit_code(s_code_unit *unit) {
   s_parsed_inst *parsed_insts;
 
@@ -31,5 +39,6 @@ int commit_code(s_code_unit *unit) {
     return 1;
   _update_insts(unit, unit->insts, parsed_insts);
   free(parsed_insts);
+  _reset_breakpoints(unit);
   return 0;
 }

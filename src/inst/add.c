@@ -13,6 +13,7 @@ static s_code_instruction *_create_inst(const s_code_instruction *prev_inst,
   new->label = NULL;
   new->address = NULL;
   new->index = prev_inst ? prev_inst->index + 1 : 0;
+  new->breakpoint = false;
   new->next = next_inst;
   return new;
 }
