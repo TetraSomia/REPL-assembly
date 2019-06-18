@@ -9,4 +9,8 @@ typedef struct {
 
 int commit_code(s_code_unit *unit);
 
+/*
+** return NULL on NASM parsing error
+*/
+
 s_parsed_inst *assemble(s_code_unit *unit);

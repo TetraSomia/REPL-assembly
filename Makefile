@@ -12,8 +12,6 @@ LDFLAGS	+=
 
 SRC_ROOT	=	./src/
 
-SRC_TEST	=	./src/test/
-
 SRC_CMD		=	./src/cmd/
 
 SRC_INST	=	./src/inst/

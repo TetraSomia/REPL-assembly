@@ -20,6 +20,7 @@ typedef	struct {
   char *name;
   uint8_t *code;
   size_t code_size;
+  size_t code_max_size;
   s_code_instruction *insts;
 } s_code_unit;
 
