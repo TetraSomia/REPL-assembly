@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "code_unit.h"
 #include "inst_internal.h"
 
@@ -18,6 +19,17 @@ static s_code_instruction *_create_inst(const s_code_instruction *prev_inst,
   return new;
 }
 
+static void _unlink_on_error(s_code_unit *unit,
+			     s_code_instruction *prev_inst,
+			     s_code_instruction *inst) {
+  if (prev_inst)
+    prev_inst->next = inst->next;
+  else
+    unit->insts = inst->next;
+  free(inst->str_input);
+  free(inst);
+}
+
 int add_instruction(s_code_unit *unit, s_code_instruction *prev_inst,
 		    const char *inst) {
   s_code_instruction *next_inst;
@@ -33,6 +45,7 @@ int add_instruction(s_code_unit *unit, s_code_instruction *prev_inst,
   for (s_code_instruction *i = new_inst; i->next ; i = i->next)
     i->next->index = i->index + 1;
   err = commit_code(unit);
-  // TODO if err, unlink ?
+  if (err)
+    _unlink_on_error(unit, prev_inst, new_inst);
   return err;
 }

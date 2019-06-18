@@ -4,7 +4,7 @@
 void dump_code_instruction(s_code_instruction *inst) {
   puts("Dumping Code Instruction:");
   printf("opcodes: ");
-  for (size_t i = 0; i < inst->size ; ++i)
+  for (size_t i = 0; i < inst->size; ++i)
     printf("%x ", inst->opcodes[i]);
   puts("");
   printf("size: %ld\n", inst->size);
@@ -21,7 +21,10 @@ void dump_code_unit(s_code_unit *unit) {
   puts("Dumping Code Unit:");
   printf("Code (size=%ld, size_max=%ld):\n",
 	 unit->code_size, unit->code_max_size);
-  //TODO print hex content
+  printf("code: ");
+  for (size_t i = 0; i < unit->code_size; ++i)
+    printf("%x ", unit->code[i]);
+  puts("");
   for (s_code_instruction *inst = unit->insts; inst; inst = inst->next) {
     puts("");
     dump_code_instruction(inst);

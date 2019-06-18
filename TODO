@@ -1,11 +1,10 @@
 GLOBAL:
 
-main loop
 execution routine
-code representation
 code loop
 exception handling
 
 LOCAL:
 
-try assemble with no inst
+error check: try assemble with no inst
+parse nasm error line to show problematic instruction(s)
