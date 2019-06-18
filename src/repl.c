@@ -7,6 +7,7 @@
 
 static struct { const char *name; f_command func; } _cmds[] =
   {{"help", &cmd_help},
+   {"dump", &cmd_dump},
    {NULL, NULL}};
 
 static int _getline(char **lineptr, size_t *n) {
@@ -61,9 +62,10 @@ void repl() {
     if (!toks)
       continue;
     cmd_ret = -1;
-    for (int i = 0; _cmds[i].name; ++i)
-      if (strcmp(_cmds[i].name, toks[i]) == 0)
+    for (int i = 0; _cmds[i].name; ++i) {
+      if (strcmp(_cmds[i].name, toks[0]) == 0)
 	cmd_ret = _cmds[i].func(ac, toks + 1);
+    }
     if (cmd_ret == -1)
       fprintf(stderr, "Command not found: %s\n", toks[0]);
     else if (cmd_ret != 0)

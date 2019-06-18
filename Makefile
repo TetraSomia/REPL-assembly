@@ -20,12 +20,13 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_ROOT)utils.c	\
 		$(SRC_ROOT)init.c	\
 		$(SRC_ROOT)repl.c	\
-		$(SRC_CMD)help.c	\
 		$(SRC_INST)add.c	\
 		$(SRC_INST)remove.c	\
 		$(SRC_INST)commit.c	\
 		$(SRC_INST)assembly.c	\
-		$(SRC_INST)dump.c
+		$(SRC_INST)dump.c	\
+		$(SRC_CMD)help.c	\
+		$(SRC_CMD)dump.c
 
 OBJS	=	$(SRCS:.c=.o)
 
