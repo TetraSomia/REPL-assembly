@@ -1,8 +1,9 @@
 GLOBAL:
 
 execution routine
-code loop
+code loop (probably ncurses)
 exception handling
+infinite loop handling
 
 LOCAL:
 

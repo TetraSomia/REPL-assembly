@@ -8,6 +8,7 @@
 static struct { const char *name; f_command func; } _cmds[] =
   {{"help", &cmd_help},
    {"dump", &cmd_dump},
+   {"run", &cmd_run},
    {NULL, NULL}};
 
 static int _getline(char **lineptr, size_t *n) {

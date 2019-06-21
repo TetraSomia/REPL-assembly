@@ -101,7 +101,7 @@ static s_parsed_inst *_parse_disassembled_line(s_parsed_inst *insts,
   insts[line_nbr + 1].offset = -1;
   insts[line_nbr + 1].inst = NULL;
   insts[line_nbr].inst = xmalloc(strlen(line) + 1);
-  sscanf(line, "%d: %[^\n]", &insts[line_nbr].offset, insts[line_nbr].inst);
+  sscanf(line, "%x: %[^\n]", &insts[line_nbr].offset, insts[line_nbr].inst);
   return insts;
 }
 

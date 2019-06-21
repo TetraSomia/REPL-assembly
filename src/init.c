@@ -11,11 +11,14 @@ static void _free_context() {
   munmap(context.units[0].code, context.units[0].code_max_size);
   rm_instructions(&context.units[0]);
   free(context.units);
+  free(context.stack);
 }
 
 void init_context() {
   int pagesize = getpagesize();
 
+  context.stack_size = DEFAULT_STACK_SIZE;
+  context.stack = xmalloc(context.stack_size);
   context.exec_ctx = NULL;
   context.units = xmalloc(sizeof(s_code_unit));
 
@@ -27,10 +30,10 @@ void init_context() {
   context.units[0].code_size = 0;
   context.units[0].code_max_size = pagesize;
   context.units[0].insts = NULL;
-  add_instruction(&context.units[0], NULL, "ret");
-  add_instruction(&context.units[0], NULL, "mov rax");
   add_instruction(&context.units[0], NULL, "mov rax, 0xdeadbeef");
-  add_instruction(&context.units[0], context.units[0].insts, "mov rax");
   add_instruction(&context.units[0], context.units[0].insts, "push rax");
+  add_instruction(&context.units[0], context.units[0].insts->next, "call rsi");
+  add_instruction(&context.units[0], context.units[0].insts->next->next, "pop rax");
+  add_instruction(&context.units[0], context.units[0].insts->next->next->next, "ret");
   atexit(&_free_context);
 }

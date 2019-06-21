@@ -16,6 +16,8 @@ SRC_CMD		=	./src/cmd/
 
 SRC_INST	=	./src/inst/
 
+SRC_CTX		=	./src/ctx/
+
 SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_ROOT)utils.c	\
 		$(SRC_ROOT)init.c	\
@@ -26,7 +28,9 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_INST)assembly.c	\
 		$(SRC_INST)dump.c	\
 		$(SRC_CMD)help.c	\
-		$(SRC_CMD)dump.c
+		$(SRC_CMD)dump.c	\
+		$(SRC_CMD)run.c		\
+		$(SRC_CTX)switch.c
 
 OBJS	=	$(SRCS:.c=.o)
 
