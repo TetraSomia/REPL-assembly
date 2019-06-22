@@ -6,12 +6,15 @@
 #include "commands.h"
 #include "context_switch.h"
 
-static struct { const char *name; f_command func; } _cmds[] =
-  {{"help", &cmd_help},
-   {"dump", &cmd_dump},
-   {"run", &cmd_run},
-   {"continue", &cmd_continue},
-   {NULL, NULL}};
+static struct {
+  const char *name;
+  const char *short_name;
+  f_command func; } _cmds[] =
+    {{"help", "h", &cmd_help},
+     {"dump", "d", &cmd_dump},
+     {"run", "r", &cmd_run},
+     {"continue", "c", &cmd_continue},
+     {NULL, NULL, NULL}};
 
 static int _getline(char **lineptr, size_t *n) {
   ssize_t getline_ret;
@@ -72,7 +75,8 @@ void repl() {
       continue;
     cmd_ret = -1;
     for (int i = 0; _cmds[i].name; ++i) {
-      if (strcmp(_cmds[i].name, toks[0]) == 0)
+      if (strcmp(_cmds[i].name, toks[0]) == 0 ||
+	  strcmp(_cmds[i].short_name, toks[0]) == 0)
 	cmd_ret = _cmds[i].func(ac, toks + 1);
     }
     if (cmd_ret == -1)
