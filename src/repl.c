@@ -46,6 +46,8 @@ static char **_tokenize_args(const char *line, size_t line_size, int *ac_ptr) {
 }
 
 static void _free_toks(char **toks) {
+  if (!toks)
+    return;
   for (int i = 0; toks[i]; ++i)
     free(toks[i]);
   free(toks);
@@ -54,13 +56,15 @@ static void _free_toks(char **toks) {
 void repl() {
   char *line = NULL;
   size_t line_size = 0;
-  char **toks;
+  char **toks = NULL;
   int ac;
   int cmd_ret;
 
-  ctx_set_repl_context();
-  puts("c");
+  if (getcontext(ctx_get_repl_ctx()) != 0)
+    fatal_libc_err("getcontext(&_repl_ctx) failed\n");
+  ctx_handle_ctx_update();
   while (1) {
+    _free_toks(toks);
     if (_getline(&line, &line_size) != 0)
       break;
     toks = _tokenize_args(line, line_size, &ac);
@@ -75,7 +79,6 @@ void repl() {
       fprintf(stderr, "Command not found: %s\n", toks[0]);
     else if (cmd_ret != 0)
       fprintf(stderr, "Command failed: %s\n", toks[0]);
-    _free_toks(toks);
   }
   free(line);
   puts("exiting...");
