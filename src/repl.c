@@ -4,11 +4,13 @@
 #include <errno.h>
 #include "repl.h"
 #include "commands.h"
+#include "context_switch.h"
 
 static struct { const char *name; f_command func; } _cmds[] =
   {{"help", &cmd_help},
    {"dump", &cmd_dump},
    {"run", &cmd_run},
+   {"continue", &cmd_continue},
    {NULL, NULL}};
 
 static int _getline(char **lineptr, size_t *n) {
@@ -55,7 +57,9 @@ void repl() {
   char **toks;
   int ac;
   int cmd_ret;
-  
+
+  ctx_set_repl_context();
+  puts("c");
   while (1) {
     if (_getline(&line, &line_size) != 0)
       break;

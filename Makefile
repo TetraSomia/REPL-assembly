@@ -27,10 +27,14 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_INST)commit.c	\
 		$(SRC_INST)assembly.c	\
 		$(SRC_INST)dump.c	\
+		$(SRC_INST)find.c	\
+		$(SRC_INST)breakpoint.c	\
 		$(SRC_CMD)help.c	\
 		$(SRC_CMD)dump.c	\
 		$(SRC_CMD)run.c		\
-		$(SRC_CTX)switch.c
+		$(SRC_CMD)continue.c	\
+		$(SRC_CTX)switch.c	\
+		$(SRC_CTX)sig_handler.c
 
 OBJS	=	$(SRCS:.c=.o)
 

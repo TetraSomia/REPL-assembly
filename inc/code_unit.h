@@ -3,6 +3,7 @@
 #include "utils.h"
 
 #define MAX_INST_SIZE 15
+#define INT3_OPCODE 0xCC
 
 typedef struct _s_code_instruction {
   uint8_t opcodes[MAX_INST_SIZE];
@@ -28,3 +29,9 @@ int add_instruction(s_code_unit *unit, s_code_instruction *prev_inst,
 		    const char *inst);
 int rm_instruction(s_code_instruction *inst);
 void rm_instructions(s_code_unit *code_unit);
+
+void set_breakpoint(s_code_instruction *inst);
+void reset_breakpoint(s_code_instruction *inst);
+
+s_code_instruction *inst_find_from_addr(const void *addr);
+s_code_instruction *inst_find_from_idx(s_code_unit *unit, int idx);
