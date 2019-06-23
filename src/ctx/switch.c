@@ -29,6 +29,11 @@ void ctx_resume_exec() {
     fatal_libc_err("setcontext(&_breakpoint_ctx) failed\n");
 }
 
+void ctx_abort_exec() {
+  if (setcontext(&_repl_ctx) != 0)
+    fatal_libc_err("setcontext(&_repl_ctx) failed\n");
+}
+
 ucontext_t *ctx_get_repl_ctx() {
   return &_repl_ctx;
 }
@@ -36,8 +41,9 @@ ucontext_t *ctx_get_repl_ctx() {
 void ctx_handle_ctx_update() {
   if (!_ctx_running)
     return;
+  reset_exec_sighandlers();
   if (!_ctx_stopped) {
-    puts("returning from asm");
+    puts("returning from asm (from 'ret' or crash)");
     _ctx_running = false;
   }
 }
@@ -53,6 +59,7 @@ void ctx_run_unit(s_code_unit *unit) {
   _exec_ctx.uc_stack.ss_size = context.stack_size;
   sigemptyset(&_exec_ctx.uc_sigmask);
   makecontext(&_exec_ctx, (void (*)())unit->code, 2, "hello from asm", &puts);
+  set_exec_sighandlers();
   printf("launching asm\n");
   if (setcontext(&_exec_ctx) != 0)
     fatal_libc_err("setcontext(&_exec_ctx) failed\n");

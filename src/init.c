@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "repl.h"
-#include "sig_handler.h"
 #include "context_switch.h"
 
 s_context context;
@@ -16,19 +15,8 @@ static void _free_context() {
   free(context.stack);
 }
 
-void _init_signal_handlers() {
-  struct sigaction sigact_struct = {0};
-
-  sigact_struct.sa_sigaction = &breakpoint_handler;
-  sigact_struct.sa_flags = SA_SIGINFO;
-  sigemptyset(&sigact_struct.sa_mask);
-  sigaction(SIGTRAP, &sigact_struct, NULL);
-}
-
 void init_context() {
   int pagesize = getpagesize();
-
-  _init_signal_handlers();
 
   context.stack_size = DEFAULT_STACK_SIZE;
   context.stack = xmalloc(context.stack_size);
@@ -44,6 +32,9 @@ void init_context() {
   context.units[0].code_max_size = pagesize;
   context.units[0].insts = NULL;
   add_instruction(&context.units[0], NULL, "mov rax, 0xdeadbeef");
+  //add_instruction(&context.units[0], NULL, "mov rax, [rax]"); //SIGSEGV
+  //add_instruction(&context.units[0], NULL, "ud2"); //SIGILL
+  //add_instruction(&context.units[0], NULL, "div rax"); //SIGFPE
   add_instruction(&context.units[0], context.units[0].insts, "push rax");
   add_instruction(&context.units[0], context.units[0].insts->next, "call rsi");
   add_instruction(&context.units[0], context.units[0].insts->next->next, "pop rax");
