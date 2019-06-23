@@ -5,13 +5,6 @@
 #include "context_switch.h"
 
 static ucontext_t _repl_ctx, _exec_ctx, _breakpoint_ctx;
-
-/*
-** "Signal number 0 is reserved for use as kill(pid, 0)"
-** from <bits/signum-generic.h>
-** So we can use 0 to indicate exit_success
-*/
-
 static bool _ctx_running = false;
 static bool _ctx_stopped = false;
 

@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include "repl.h"
 #include "context_switch.h"
 
@@ -32,6 +33,7 @@ void init_context() {
   context.units[0].code_max_size = pagesize;
   context.units[0].insts = NULL;
   add_instruction(&context.units[0], NULL, "mov rax, 0xdeadbeef");
+  //add_instruction(&context.units[0], NULL, "loop:\njmp loop"); //infinite loop
   //add_instruction(&context.units[0], NULL, "mov rax, [rax]"); //SIGSEGV
   //add_instruction(&context.units[0], NULL, "ud2"); //SIGILL
   //add_instruction(&context.units[0], NULL, "div rax"); //SIGFPE
