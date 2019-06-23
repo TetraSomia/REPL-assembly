@@ -1,3 +1,4 @@
+#include <signal.h>
 #include <string.h>
 #include <stdio.h> //TODO tmp
 #include "repl.h"
@@ -50,6 +51,7 @@ void ctx_run_unit(s_code_unit *unit) {
   _exec_ctx.uc_link = &_repl_ctx;
   _exec_ctx.uc_stack.ss_sp = context.stack;
   _exec_ctx.uc_stack.ss_size = context.stack_size;
+  sigemptyset(&_exec_ctx.uc_sigmask);
   makecontext(&_exec_ctx, (void (*)())unit->code, 2, "hello from asm", &puts);
   printf("launching asm\n");
   if (setcontext(&_exec_ctx) != 0)

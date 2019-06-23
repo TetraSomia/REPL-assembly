@@ -21,6 +21,7 @@ void _init_signal_handlers() {
 
   sigact_struct.sa_sigaction = &breakpoint_handler;
   sigact_struct.sa_flags = SA_SIGINFO;
+  sigemptyset(&sigact_struct.sa_mask);
   sigaction(SIGTRAP, &sigact_struct, NULL);
 }
 
