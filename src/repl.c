@@ -11,9 +11,10 @@ static struct {
   const char *short_name;
   f_command func; } _cmds[] =
     {{"help", "h", &cmd_help},
-     {"dump", "d", &cmd_dump},
+     {"dump", "dump", &cmd_dump},
      {"run", "r", &cmd_run},
      {"continue", "c", &cmd_continue},
+     {"disas", "d", &cmd_disas},
      {NULL, NULL, NULL}};
 
 static int _getline(char **lineptr, size_t *n) {

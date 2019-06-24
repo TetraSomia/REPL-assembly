@@ -5,7 +5,7 @@
 ** only defined upon _GNU_SOURCE definition
 */
 
-enum
+typedef enum
 {
   REG_R8 = 0,
   REG_R9,
@@ -30,4 +30,4 @@ enum
   REG_TRAPNO,
   REG_OLDMASK,
   REG_CR2
-};
+} e_register;

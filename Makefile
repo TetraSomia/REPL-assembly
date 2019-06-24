@@ -22,6 +22,7 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_ROOT)utils.c	\
 		$(SRC_ROOT)init.c	\
 		$(SRC_ROOT)repl.c	\
+		$(SRC_ROOT)getters.c	\
 		$(SRC_INST)add.c	\
 		$(SRC_INST)remove.c	\
 		$(SRC_INST)commit.c	\
@@ -33,6 +34,7 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_CMD)dump.c	\
 		$(SRC_CMD)run.c		\
 		$(SRC_CMD)continue.c	\
+		$(SRC_CMD)disas.c	\
 		$(SRC_CTX)switch.c	\
 		$(SRC_CTX)sig_handler.c
 

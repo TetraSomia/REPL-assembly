@@ -38,6 +38,7 @@ void ctx_handle_ctx_update() {
   if (!_ctx_stopped) {
     puts("returning from asm (from 'ret' or crash)");
     _ctx_running = false;
+    context.exec_ctx = NULL;
   }
 }
 
