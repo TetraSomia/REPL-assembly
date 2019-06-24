@@ -1,5 +1,6 @@
 repl-asm
 vgcore.*
+.gdb_history
 
 # Prerequisites
 *.d

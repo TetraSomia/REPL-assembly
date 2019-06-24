@@ -16,7 +16,7 @@ static void _disas_unit(s_code_unit *unit) {
       strcpy(prefix, "=>");
     else if (i->breakpoint)
       strcpy(prefix, "* ");
-    printf(" %s %p\t%s\n", prefix, i->address, i->str_gen);
+    printf("%d: %s %p\t%s\n", i->index, prefix, i->address, i->str_gen);
   }
 }
 

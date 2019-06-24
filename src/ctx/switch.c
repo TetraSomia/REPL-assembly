@@ -1,12 +1,13 @@
 #include <signal.h>
 #include <string.h>
-#include <stdio.h> //TODO tmp
+#include <stdio.h>
 #include "repl.h"
 #include "context_switch.h"
 
 static ucontext_t _repl_ctx, _exec_ctx, _breakpoint_ctx;
 static bool _ctx_running = false;
 static bool _ctx_stopped = false;
+static bool _ctx_aborted = false;
 
 void ctx_resume_repl() {
   _ctx_stopped = true;
@@ -23,6 +24,7 @@ void ctx_resume_exec() {
 }
 
 void ctx_abort_exec() {
+  _ctx_aborted = true;
   if (setcontext(&_repl_ctx) != 0)
     fatal_libc_err("setcontext(&_repl_ctx) failed\n");
 }
@@ -35,11 +37,14 @@ void ctx_handle_ctx_update() {
   if (!_ctx_running)
     return;
   reset_exec_sighandlers();
-  if (!_ctx_stopped) {
-    puts("returning from asm (from 'ret' or crash)");
-    _ctx_running = false;
-    context.exec_ctx = NULL;
-  }
+  if (_ctx_stopped)
+    return;
+  if (!_ctx_aborted)
+    puts("Code exited normally");    
+  else
+    _ctx_aborted = false;
+  _ctx_running = false;
+  context.exec_ctx = NULL;
 }
 
 void ctx_run_unit(s_code_unit *unit) {
@@ -54,7 +59,7 @@ void ctx_run_unit(s_code_unit *unit) {
   sigemptyset(&_exec_ctx.uc_sigmask);
   makecontext(&_exec_ctx, (void (*)())unit->code, 2, "hello from asm", &puts);
   set_exec_sighandlers();
-  printf("launching asm\n");
+  puts("Starting code execution");
   if (setcontext(&_exec_ctx) != 0)
     fatal_libc_err("setcontext(&_exec_ctx) failed\n");
 }

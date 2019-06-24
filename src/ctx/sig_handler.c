@@ -3,18 +3,14 @@
 #include "reg_idx.h"
 #include "repl.h"
 #include "context_switch.h"
+#include "getters.h"
 
 #define TRAP_FLAG_MASK 0x0100
 
-static inline void _reset_breakpoint(ucontext_t *ucontext,
-				     s_code_instruction *inst) {
-  ucontext->uc_mcontext.gregs[REG_EFL] ^= 0x0100;
+static inline void _reset_breakpoint(s_code_instruction *inst) {
+  *get_reg_ptr(REG_EFL) ^= 0x0100;
   if (inst->breakpoint)
     set_breakpoint(inst);
-}
-
-static inline void _set_trap_flag(ucontext_t *ucontext) {
-  ucontext->uc_mcontext.gregs[REG_EFL] |= TRAP_FLAG_MASK;
 }
 
 static void _breakpoint_handler(int sig, siginfo_t *info, void *raw_context) {
@@ -22,24 +18,24 @@ static void _breakpoint_handler(int sig, siginfo_t *info, void *raw_context) {
   static s_code_instruction *inst = NULL;
 
   (void)info;
-  if (ucontext->uc_mcontext.gregs[REG_EFL] & TRAP_FLAG_MASK) {
-    _reset_breakpoint(ucontext, inst);
+  context.exec_ctx = ucontext;
+  if (get_reg(REG_EFL) & TRAP_FLAG_MASK) {
+    _reset_breakpoint(inst);
     return;
   }
-  context.exec_ctx = ucontext;
   if (sig == SIGTRAP) {
-    ucontext->uc_mcontext.gregs[REG_RIP] -= 1; //reset RIP to inst first byte
-    printf("Breakpoint hit: %p\n", (void*)ucontext->uc_mcontext.gregs[REG_RIP]);
+    *get_reg_ptr(REG_RIP) -= 1; //reset RIP to inst first byte
+    printf("Breakpoint hit (%p)\n", (void*)get_reg(REG_RIP));
   }
   else
     fprintf(stderr, "Execution stopped manually\n");
   ctx_resume_repl();
   if (sig == SIGTRAP) {
-    inst = inst_find_from_addr((void*)ucontext->uc_mcontext.gregs[REG_RIP]);
+    inst = inst_find_from_addr((void*)get_reg(REG_RIP));
     if (!inst)
       fatal_err("Instruction not found from RIP\n");
     *(inst->address) = inst->opcodes[0]; //replace breakpoint by inst first byte
-    _set_trap_flag(ucontext);
+    *get_reg_ptr(REG_EFL) |= TRAP_FLAG_MASK;
   }
   set_exec_sighandlers();
 }
