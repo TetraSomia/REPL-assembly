@@ -13,8 +13,9 @@ static struct {
     {{"help", "h", &cmd_help},
      {"dump", "dump", &cmd_dump},
      {"run", "r", &cmd_run},
-     {"continue", "c", &cmd_continue},
+     {"continue", "c", &cmd_cont},
      {"disas", "d", &cmd_disas},
+     {"inst", "i", &cmd_inst},
      {NULL, NULL, NULL}};
 
 static int _getline(char **lineptr, size_t *n) {
@@ -82,8 +83,7 @@ void repl() {
     }
     if (cmd_ret == -1)
       fprintf(stderr, "Command not found: %s\n", toks[0]);
-    else if (cmd_ret != 0)
-      fprintf(stderr, "Command failed: %s\n", toks[0]);
+    // else if (cmd_ret != 0) //Command failed
   }
   free(line);
   puts("exiting...");

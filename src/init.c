@@ -21,7 +21,9 @@ void init_context() {
   context.stack_size = DEFAULT_STACK_SIZE;
   context.stack = xmalloc(context.stack_size);
   context.exec_ctx = NULL;
-  context.units = xmalloc(sizeof(s_code_unit));
+  context.units = xmalloc(sizeof(s_code_unit) * 2);
+  context.units[1].name = NULL;
+  context.cur_unit = context.units;
 
   context.units[0].name = strdup("main");
   pagesize = getpagesize();
@@ -40,8 +42,8 @@ void init_context() {
   add_instruction(&context.units[0], context.units[0].insts->next, "call rsi");
   add_instruction(&context.units[0], context.units[0].insts->next->next, "pop rax");
   add_instruction(&context.units[0], context.units[0].insts->next->next->next, "ret");
-  set_breakpoint(inst_find_from_idx(&context.units[0], 2));
-  set_breakpoint(inst_find_from_idx(&context.units[0], 3));
+  set_breakpoint(inst_find_from_idx(2));
+  set_breakpoint(inst_find_from_idx(3));
 
   atexit(&_free_context);
 }

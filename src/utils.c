@@ -25,6 +25,25 @@ void fatal_libc_err(const char *fmt, ...) {
   exit(1);
 }
 
+int p_error(const char *fmt, ...) {
+  va_list arglist;
+
+  fprintf(stderr, "Error: ");
+  va_start(arglist, fmt);
+  vfprintf(stderr, fmt, arglist);
+  va_end(arglist);
+  return 1;
+}
+
+int p_warning(const char *fmt, ...) {
+  va_list arglist;
+
+  fprintf(stderr, "Warning: ");
+  va_start(arglist, fmt);
+  vfprintf(stderr, fmt, arglist);
+  va_end(arglist);
+  return 0;
+}
 
 void *xmalloc(size_t size) {
   void *ptr;

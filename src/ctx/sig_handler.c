@@ -13,6 +13,13 @@ static inline void _reset_breakpoint(s_code_instruction *inst) {
     set_breakpoint(inst);
 }
 
+static void _set_cur_unit() {
+  s_code_unit *cur_unit = unit_find_from_addr((void*)get_reg(REG_RIP));
+
+  if (cur_unit != NULL)
+    context.cur_unit = cur_unit;
+}
+
 static void _breakpoint_handler(int sig, siginfo_t *info, void *raw_context) {
   ucontext_t *ucontext = (ucontext_t*)raw_context;
   static s_code_instruction *inst = NULL;
@@ -23,6 +30,7 @@ static void _breakpoint_handler(int sig, siginfo_t *info, void *raw_context) {
     _reset_breakpoint(inst);
     return;
   }
+  _set_cur_unit();
   if (sig == SIGTRAP) {
     *get_reg_ptr(REG_RIP) -= 1; //reset RIP to inst first byte
     printf("Breakpoint hit (%p)\n", (void*)get_reg(REG_RIP));

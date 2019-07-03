@@ -34,4 +34,8 @@ void set_breakpoint(s_code_instruction *inst);
 void reset_breakpoint(s_code_instruction *inst);
 
 s_code_instruction *inst_find_from_addr(const void *addr);
-s_code_instruction *inst_find_from_idx(s_code_unit *unit, int idx);
+s_code_instruction *inst_find_from_idx(int idx);
+s_code_instruction *inst_find_from_unit_and_idx(s_code_unit *unit, int idx);
+
+s_code_unit *unit_find_from_addr(const void *addr);
+s_code_unit *unit_find_from_name(const char *name);

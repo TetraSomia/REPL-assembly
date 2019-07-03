@@ -5,11 +5,13 @@
 #include <stdbool.h>
 
 /*
-** Abort on error
+** Error and Warning report
 */
 
 void fatal_err(const char *fmt, ...);
 void fatal_libc_err(const char *fmt, ...); // same but uses errno
+int p_warning(const char *fmt, ...);
+int p_error(const char *fmt, ...);
 
 
 /*

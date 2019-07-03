@@ -6,7 +6,7 @@
 static void _disas_unit(s_code_unit *unit) {
   void *rip = NULL;
 
-  if (context.exec_ctx)
+  if (is_running())
     rip = (void*)get_reg(REG_RIP);
   for (s_code_instruction *i = unit->insts; i; i = i->next) {
     if (i->label)
