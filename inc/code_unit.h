@@ -14,6 +14,7 @@ typedef struct _s_code_instruction {
   uint8_t *address;
   int index;
   bool breakpoint;
+  struct _s_code_instruction *prev;
   struct _s_code_instruction *next;
 } s_code_instruction;
 

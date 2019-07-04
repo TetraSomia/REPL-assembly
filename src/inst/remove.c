@@ -4,8 +4,7 @@
 static void _free_inst_content_and_self(s_code_instruction *inst) {
   free(inst->str_gen);
   free(inst->str_input);
-  if (inst->label)
-    free(inst->label);
+  free(inst->label);
   free(inst);
 }
 
@@ -21,6 +20,7 @@ void rm_instructions(s_code_unit *code_unit) {
 
   code_unit->code_size = 0;
   inst = code_unit->insts;
+  code_unit->insts = NULL;
   while (inst) {
     next_inst = inst->next;
     _free_inst_content_and_self(inst);
