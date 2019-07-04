@@ -28,7 +28,7 @@ typedef	struct {
 
 int add_instruction(s_code_unit *unit, s_code_instruction *prev_inst,
 		    const char *inst);
-int rm_instruction(s_code_instruction *inst);
+void rm_instruction(s_code_unit *unit, s_code_instruction *inst);
 void rm_instructions(s_code_unit *code_unit);
 
 void set_breakpoint(s_code_instruction *inst);

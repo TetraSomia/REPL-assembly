@@ -53,10 +53,9 @@ static int _assemble() {
   }
   if (errno != 0)
     fatal_libc_err("getline() on popen() failed\n");
-  if (line)
-    free(line);
+  free(line);
   if (pclose(file) == -1)
-    fatal_libc_err("pclose(\"%s\") failed", cmd);
+    fatal_libc_err("pclose(\"%s\") failed\n", cmd);
   return is_error;
 }
 
@@ -78,9 +77,9 @@ static int _read_assembly(s_code_unit *unit) {
     if (idx + read_len > unit->code_max_size) {
       //TODO: try to realloc at same address with mmap
       err = 1;
-      fprintf(stderr, "Error: maximum number of bytes wrote into "
+      p_error("Maximum number of bytes wrote into "
 	      "the code_unit (%ld), code truncated at the end\n"
-	      "Last byte of code at address: %p", unit->code_max_size,
+	      "Last byte of code at address: %p\n", unit->code_max_size,
 	      unit->code + unit->code_max_size - 1);
       read_len = unit->code_max_size - idx;
     }
@@ -129,17 +128,21 @@ static s_parsed_inst * _disassemble() {
   }
   if (errno != 0)
     fatal_libc_err("getline() on popen() failed\n");
-  if (line)
-    free(line);
+  free(line);
   if (pclose(file) == -1)
-    fatal_libc_err("pclose(\"%s\") failed", cmd);
+    fatal_libc_err("pclose(\"%s\") failed\n", cmd);
   if (insts == NULL)
-    fatal_err("Assert failed: objdump didn't output any instruction");
+    fatal_err("Assert failed: objdump didn't output any instruction\n");
   return insts;
 }
 
 s_parsed_inst *assemble(s_code_unit *unit) {
-  atexit(&_cleanup_tmpfile);
+  static bool cleanup_registered = false;
+
+  if (!cleanup_registered) {
+    atexit(&_cleanup_tmpfile);
+    cleanup_registered = true;
+  }
   _write_code(unit->insts);
   if (_assemble() != 0)
     return NULL;

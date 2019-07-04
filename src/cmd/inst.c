@@ -19,7 +19,7 @@ static int _inst_add(s_code_instruction *inst) {
 }
 
 static int _inst_rm(s_code_instruction *inst) {
-  (void)inst;
+  rm_instruction(context.cur_unit, inst);
   return 0;
 }
 

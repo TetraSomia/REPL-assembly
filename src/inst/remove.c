@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "code_unit.h"
+#include "inst_internal.h"
 
 static void _free_inst_content_and_self(s_code_instruction *inst) {
   free(inst->str_gen);
@@ -8,10 +9,16 @@ static void _free_inst_content_and_self(s_code_instruction *inst) {
   free(inst);
 }
 
-int rm_instruction(s_code_instruction *inst) {
-  (void)inst;
-  //TODO implement
-  return 0;
+void rm_instruction(s_code_unit *unit, s_code_instruction *inst) {
+  if (inst->prev)
+    inst->prev->next = inst->next;
+  else
+    unit->insts = inst->next;
+  if (inst->next)
+    inst->next->prev = inst->prev;
+  _free_inst_content_and_self(inst);
+  if (commit_code(unit) != 0)
+    fatal_err("Assert failed: removing an instruction shouldn't fail\n");
 }
 
 void rm_instructions(s_code_unit *code_unit) {
