@@ -25,6 +25,7 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_ROOT)getters.c	\
 		$(SRC_ROOT)unit_finder.c\
 		$(SRC_INST)add.c	\
+		$(SRC_INST)edit.c	\
 		$(SRC_INST)remove.c	\
 		$(SRC_INST)commit.c	\
 		$(SRC_INST)assembly.c	\

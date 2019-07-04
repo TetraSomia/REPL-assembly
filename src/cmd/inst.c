@@ -24,8 +24,16 @@ static int _inst_rm(s_code_instruction *inst) {
 }
 
 static int _inst_edit(s_code_instruction *inst) {
-  (void)inst;
-  return 0;
+  char *line;
+  int err;
+
+  printf("Editing the instruction \'%s\':\n", inst->str_gen);
+  line = readline("> ");
+  if (line == NULL)
+    return p_warning("Aborting instruction edition\n");
+  err = edit_instruction(context.cur_unit, inst, line);
+  free(line);
+  return err;
 }
 
 static struct {
