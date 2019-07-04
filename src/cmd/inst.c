@@ -1,13 +1,21 @@
 #include <stdio.h>
 #include <string.h>
+#include <readline/readline.h>
+#include <stdlib.h>
 #include "repl.h"
 #include "getters.h"
 
 static int _inst_add(s_code_instruction *inst) {
-  // Only sub command that can receive inst == NULL,
-  // when we want to add a new instruction at the end
-  (void)inst;
-  return 0;
+  char *line;
+  int err;
+
+  puts("Type the instruction to insert:");
+  line = readline("> ");
+  if (line == NULL)
+    return p_warning("Aborting instruction insertion\n");
+  err = add_instruction(context.cur_unit, inst, line);
+  free(line);
+  return err;
 }
 
 static int _inst_rm(s_code_instruction *inst) {
@@ -45,7 +53,8 @@ int cmd_inst(int ac, char **av) {
   switch (inst_t) {
   case PARSED_ADDR:
     if ((inst = inst_find_from_addr((void*)inst_v.addr)) == NULL)
-      return p_error("No instruction matches address 0x%lx\n", inst_v.addr);
+      return p_error("No instruction matches address 0x%lx"
+		     " in the current unit\n", inst_v.addr);
     break;
   case PARSED_IDX:
     if ((inst = inst_find_from_idx(inst_v.idx)) == NULL &&

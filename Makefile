@@ -8,7 +8,7 @@ CFLAGS	+=	-I$(INC)	\
 		-Wall -Wextra	\
 		-g
 
-LDFLAGS	+=
+LDFLAGS	+=	-lreadline
 
 SRC_ROOT	=	./src/
 
