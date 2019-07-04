@@ -38,10 +38,10 @@ void init_context() {
   //add_instruction(&context.units[0], NULL, "mov rax, [rax]"); //SIGSEGV
   //add_instruction(&context.units[0], NULL, "ud2"); //SIGILL
   //add_instruction(&context.units[0], NULL, "div rax"); //SIGFPE
-  add_instruction(&context.units[0], context.units[0].insts, "push rax");
-  add_instruction(&context.units[0], context.units[0].insts->next, "call rsi");
-  add_instruction(&context.units[0], context.units[0].insts->next->next, "pop rax");
-  add_instruction(&context.units[0], context.units[0].insts->next->next->next, "ret");
+  add_instruction(&context.units[0], inst_find_from_idx(0), "push rax");
+  add_instruction(&context.units[0], inst_find_from_idx(1), "call rsi");
+  add_instruction(&context.units[0], inst_find_from_idx(2), "pop rax");
+  add_instruction(&context.units[0], inst_find_from_idx(3), "ret");
   set_breakpoint(inst_find_from_idx(2));
   set_breakpoint(inst_find_from_idx(3));
 
