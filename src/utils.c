@@ -76,5 +76,5 @@ void clear_term() {
 
 inline void assert_single_line(const char *s) {
   if (strchr(s, '\n'))
-    fatal_libc_err("Assert failed: multi-line string used\n");
+    fatal_err("Assert failed: multi-line string used\n");
 }
