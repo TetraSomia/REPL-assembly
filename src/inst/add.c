@@ -35,12 +35,14 @@ static void _unlink_on_error(s_code_unit *unit, s_code_instruction *inst) {
   free(inst);
 }
 
-int add_instruction(s_code_unit *unit, s_code_instruction *prev_inst,
-		    const char *inst) {
+s_code_instruction *add_instruction(s_code_unit *unit,
+				    s_code_instruction *prev_inst,
+				    const char *inst) {
   s_code_instruction *next_inst;
   s_code_instruction *new_inst;
   int err;
 
+  assert_single_line(inst);
   next_inst = prev_inst ? prev_inst->next : unit->insts;
   new_inst = _create_inst(prev_inst, next_inst, inst);
   if (!new_inst->prev)
@@ -50,5 +52,5 @@ int add_instruction(s_code_unit *unit, s_code_instruction *prev_inst,
   err = commit_code(unit);
   if (err)
     _unlink_on_error(unit, new_inst);
-  return err;
+  return err ? NULL : new_inst;
 }

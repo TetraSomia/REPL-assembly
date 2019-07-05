@@ -7,6 +7,7 @@ int edit_instruction(s_code_unit *unit, s_code_instruction *inst,
   char *old_str_input;
   int err;
 
+  assert_single_line(inst_str);
   old_str_input = inst->str_input;
   inst->str_input = xstrdup(inst_str);
   err = commit_code(unit);

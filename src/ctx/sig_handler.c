@@ -8,7 +8,7 @@
 #define TRAP_FLAG_MASK 0x0100
 
 static inline void _reset_breakpoint(s_code_instruction *inst) {
-  *get_reg_ptr(REG_EFL) ^= 0x0100;
+  *get_reg_ptr(REG_EFL) ^= TRAP_FLAG_MASK;
   if (inst->breakpoint)
     set_breakpoint(inst);
 }

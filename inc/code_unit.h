@@ -26,8 +26,9 @@ typedef	struct {
   s_code_instruction *insts;
 } s_code_unit;
 
-int add_instruction(s_code_unit *unit, s_code_instruction *prev_inst,
-		    const char *inst);
+s_code_instruction *add_instruction(s_code_unit *unit,
+				    s_code_instruction *prev_inst,
+				    const char *inst);
 int edit_instruction(s_code_unit *unit, s_code_instruction *inst,
 		     const char *inst_str);
 void rm_instruction(s_code_unit *unit, s_code_instruction *inst);

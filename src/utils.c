@@ -73,3 +73,8 @@ char *xstrdup(const char *s) {
 void clear_term() {
   printf("\e[1;1H\e[2J");
 }
+
+inline void assert_single_line(const char *s) {
+  if (strchr(s, '\n'))
+    fatal_libc_err("Assert failed: multi-line string used\n");
+}

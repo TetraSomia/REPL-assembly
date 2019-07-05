@@ -28,3 +28,8 @@ char *xstrdup(const char *s);
 
 void clear_term();
 
+/*
+** Assertions
+*/
+
+void assert_single_line(const char *s);

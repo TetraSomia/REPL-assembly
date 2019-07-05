@@ -1,11 +1,20 @@
 GLOBAL:
 
-execution routine
-code loop (probably ncurses)
-exception handling
-infinite loop handling
+- code loop (probably ncurses)
+- libdl
+- multi code unit
+- symbols
 
 LOCAL:
 
-error check: try assemble with no inst
-parse nasm error line to show problematic instruction(s)
+- error check: try assemble with no inst
+- parse nasm error line to show problematic instruction(s)
+- sigaltstack
+- handle 'i rm' with rip == last inst
+- crash when modifying non scratch registers, why sigsegv not caught ?
+
+COMMANDS:
+print (**)
+breakpoint (*)
+label (*)
+step (***)

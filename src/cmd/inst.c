@@ -5,25 +5,39 @@
 #include "repl.h"
 #include "getters.h"
 
+static void _adjust_RIP(void *addr, size_t old_size, size_t new_size) {
+  uint64_t *rip = get_reg_ptr(REG_RIP);
+
+  if (!rip)
+    return;
+  if ((void*)*rip > addr)
+    *rip += new_size - old_size;
+}
+
 static int _inst_add(s_code_instruction *inst) {
+  void *old_addr = inst ? inst->address : NULL;
   char *line;
-  int err;
+  s_code_instruction *new_inst;
 
   puts("Type the instruction to insert:");
   line = readline("> ");
   if (line == NULL)
     return p_warning("Aborting instruction insertion\n");
-  err = add_instruction(context.cur_unit, inst, line);
+  new_inst = add_instruction(context.cur_unit, inst, line);
   free(line);
-  return err;
+  if (new_inst)
+    _adjust_RIP(old_addr, 0, new_inst->size);
+  return new_inst ? 0 : 1;
 }
 
 static int _inst_rm(s_code_instruction *inst) {
+  _adjust_RIP(inst->address, inst->size, 0);
   rm_instruction(context.cur_unit, inst);
   return 0;
 }
 
 static int _inst_edit(s_code_instruction *inst) {
+  size_t old_size = inst->size;
   char *line;
   int err;
 
@@ -33,6 +47,8 @@ static int _inst_edit(s_code_instruction *inst) {
     return p_warning("Aborting instruction edition\n");
   err = edit_instruction(context.cur_unit, inst, line);
   free(line);
+  if (!err)
+    _adjust_RIP(inst->address, old_size, inst->size);
   return err;
 }
 

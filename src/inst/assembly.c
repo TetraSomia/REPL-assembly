@@ -33,7 +33,7 @@ static void _write_code(s_code_instruction *insts) {
 }
 
 static int _assemble() {
-  const char cmd_fmt[] = "nasm -Werror -w+all -s -a -fbin -o %s %s";
+  const char cmd_fmt[] = "nasm -Xgnu -Werror -w+all -s -a -fbin -o %s %s";
   char cmd[sizeof(cmd_fmt) + sizeof(_path_file_in) + sizeof(_path_file_out)];
   FILE *file;
   char *line = NULL;
@@ -45,6 +45,7 @@ static int _assemble() {
   file = popen(cmd, "r");
   if (file == NULL)
     fatal_libc_err("popen(\"%s\") failed\n", cmd);
+  errno = 0;
   while ((read = getline(&line, &line_len, file)) != -1) {
     if (is_error == 0)
       fprintf(stderr, "An error occured when assembling:\n");
@@ -120,6 +121,7 @@ static s_parsed_inst * _disassemble() {
   file = popen(cmd, "r");
   if (file == NULL)
     fatal_libc_err("popen(\"%s\") failed\n", cmd);
+  errno = 0;
   while ((read = getline(&line, &line_len, file)) != -1) {
     line_nbr++;
     if (line_nbr < header_size)

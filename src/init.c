@@ -25,7 +25,7 @@ void init_context() {
   context.units[1].name = NULL;
   context.cur_unit = context.units;
 
-  context.units[0].name = strdup("main");
+  context.units[0].name = xstrdup("main");
   pagesize = getpagesize();
   context.units[0].code = mmap(NULL, pagesize,
 			       PROT_READ | PROT_WRITE | PROT_EXEC,
