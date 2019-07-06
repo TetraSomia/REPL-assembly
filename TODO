@@ -10,7 +10,6 @@ LOCAL:
 - error check: try assemble with no inst
 - parse nasm error line to show problematic instruction(s)
 - sigaltstack
-- handle 'i rm' with rip == last inst
 - crash when modifying non scratch registers, why sigsegv not caught ?
 
 COMMANDS:

@@ -31,6 +31,8 @@ static int _inst_add(s_code_instruction *inst) {
 }
 
 static int _inst_rm(s_code_instruction *inst) {
+  if (!inst->next && (uint8_t*)get_reg(REG_RIP) == inst->address)
+    return p_warning("Cannot remove last instruction while executing it\n");
   _adjust_RIP(inst->address, inst->size, 0);
   rm_instruction(context.cur_unit, inst);
   return 0;
