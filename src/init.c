@@ -44,6 +44,6 @@ void init_context() {
   add_instruction(&context.units[0], inst_find_from_idx(3), "ret");
   set_breakpoint(inst_find_from_idx(2));
   set_breakpoint(inst_find_from_idx(3));
-
+  set_breakpoint(inst_find_from_idx(4));
   atexit(&_free_context);
 }

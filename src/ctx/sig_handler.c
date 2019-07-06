@@ -48,16 +48,52 @@ static void _breakpoint_handler(int sig, siginfo_t *info, void *raw_context) {
   set_exec_sighandlers();
 }
 
-static void _crash_handler(int sig) {
-  const struct {int signum; const char *name; const char *desc;}
-  strs[] = {{SIGFPE, "SIGFPE", sys_siglist[SIGFPE]},
-	    {SIGILL, "SIGILL", sys_siglist[SIGILL]},
-	    {SIGSEGV, "SIGSEGV", sys_siglist[SIGSEGV]}};
+static void _crash_handler(int sig, siginfo_t *info, void *raw_context) {
+  ucontext_t *ucontext = (ucontext_t*)raw_context;
+  typedef struct {int no; const char *desc;} s_sicode;
+  const s_sicode code_ill[] = {{ILL_ILLOPC, "Illegal opcode"},
+			       {ILL_ILLOPN, "Illegal operand"},
+			       {ILL_ILLADR, "Illegal addressing mode"},
+			       {ILL_ILLTRP, "Illegal trap"},
+			       {ILL_PRVOPC, "Privileged opcode"},
+			       {ILL_PRVREG, "Privileged register"},
+			       {ILL_COPROC, "Coprocessor error"},
+			       {ILL_BADSTK, "Internal stack error"},
+			       {0, NULL}};
+  const s_sicode code_fpe[] = {{FPE_INTDIV, "Integer divide-by-zero"},
+			       {FPE_INTOVF, "Integer overflow"},
+			       {FPE_FLTDIV, "Floating point divide-by-zero"},
+			       {FPE_FLTOVF, "Floating point overflow"},
+			       {FPE_FLTUND, "Floating point underflow"},
+			       {FPE_FLTRES, "Floating point inexact result"},
+			       {FPE_FLTINV, "Invalid floating point operation"},
+			       {FPE_FLTSUB, "Subscript out of range"},
+			       {0, NULL}};
+  const s_sicode code_segv[] = {{SEGV_MAPERR, "Address not mapped"},
+				{SEGV_ACCERR, "Invalid permissions"},
+				{0, NULL}};
+  const struct {int signum; const char *name;
+    const char *desc; const s_sicode *codes;}
+  strs[] = {{SIGFPE, "SIGFPE", sys_siglist[SIGFPE], code_fpe},
+	    {SIGILL, "SIGILL", sys_siglist[SIGILL], code_ill},
+	    {SIGSEGV, "SIGSEGV", sys_siglist[SIGSEGV], code_segv}};
 
+  context.exec_ctx = ucontext;
+  _set_cur_unit();
   for (size_t i = 0; i < sizeof(strs) / sizeof(*strs); ++i)
     if (sig == strs[i].signum) {
-      fprintf(stderr, "Crash of execution due to %s: %s\n",
-	      strs[i].name, strs[i].desc);
+      fprintf(stderr, "Crash of execution at: %p\nDue to %s: %s: ",
+	      (void*)get_reg(REG_RIP), strs[i].name, strs[i].desc);
+      for (size_t j = 0; strs[i].codes[j].desc; ++j) {
+	if (info->si_code == strs[i].codes[j].no) {
+	    fprintf(stderr, "%s", strs[i].codes[j].desc);
+	  if (sig == SIGSEGV)
+	    fprintf(stderr, " (%p).\n", info->si_addr);
+	  else
+	    fprintf(stderr, ".\n");
+	  break;
+	}
+      }
       break;
     }
   ctx_abort_exec();
@@ -78,7 +114,8 @@ void set_exec_sighandlers() {
   sigact_struct.sa_sigaction = &_breakpoint_handler;
   sigaction(SIGTRAP, &sigact_struct, NULL);
   sigaction(SIGINT, &sigact_struct, NULL);
-  signal(SIGFPE, &_crash_handler);
-  signal(SIGILL, &_crash_handler);
-  signal(SIGSEGV, &_crash_handler);
+  sigact_struct.sa_sigaction = &_crash_handler;
+  sigaction(SIGFPE, &sigact_struct, NULL);
+  sigaction(SIGILL, &sigact_struct, NULL);
+  sigaction(SIGSEGV, &sigact_struct, NULL);
 }
