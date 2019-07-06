@@ -51,7 +51,7 @@ void ctx_run_unit(s_code_unit *unit) {
   if (_ctx_running == true)
     return;
   _ctx_running = true;
-  memset(context.stack, 0, context.stack_size); //cause valgrind errors
+  memset(context.stack, 0, context.stack_size); //causes valgrind errors
   getcontext(&_exec_ctx);
   _exec_ctx.uc_link = &_repl_ctx;
   _exec_ctx.uc_stack.ss_sp = context.stack;

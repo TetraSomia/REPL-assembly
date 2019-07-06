@@ -38,6 +38,8 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_CMD)cont.c	\
 		$(SRC_CMD)inst.c	\
 		$(SRC_CMD)disas.c	\
+		$(SRC_CMD)label.c	\
+		$(SRC_CMD)breakpoint.c	\
 		$(SRC_CTX)switch.c	\
 		$(SRC_CTX)sig_handler.c
 

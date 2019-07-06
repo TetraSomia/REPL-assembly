@@ -17,7 +17,8 @@ static struct {
      {"continue", "c", &cmd_cont},
      {"disas", "d", &cmd_disas},
      {"inst", "i", &cmd_inst},
-     {NULL, NULL, NULL}};
+     {"label", "l", &cmd_label},
+     {"breakpoint", "b", &cmd_breakpoint}};
 
 static char **_tokenize_args(const char *line, size_t line_size, int *ac_ptr) {
   char tmp_line[line_size];
@@ -64,7 +65,7 @@ void repl() {
     if (!toks)
       continue;
     cmd_ret = -1;
-    for (int i = 0; _cmds[i].name; ++i) {
+    for (size_t i = 0; i < sizeof(_cmds) / sizeof(*_cmds); ++i) {
       if (strcmp(_cmds[i].name, toks[0]) == 0 ||
 	  strcmp(_cmds[i].short_name, toks[0]) == 0)
 	cmd_ret = _cmds[i].func(ac, toks + 1);
