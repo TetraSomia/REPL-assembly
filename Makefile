@@ -32,6 +32,7 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_INST)dump.c	\
 		$(SRC_INST)find.c	\
 		$(SRC_INST)breakpoint.c	\
+		$(SRC_INST)label.c	\
 		$(SRC_CMD)help.c	\
 		$(SRC_CMD)dump.c	\
 		$(SRC_CMD)run.c		\

@@ -34,9 +34,6 @@ int edit_instruction(s_code_unit *unit, s_code_instruction *inst,
 void rm_instruction(s_code_unit *unit, s_code_instruction *inst);
 void rm_instructions(s_code_unit *code_unit);
 
-void set_breakpoint(s_code_instruction *inst);
-void reset_breakpoint(s_code_instruction *inst);
-
 s_code_instruction *inst_find_from_addr(const void *addr);
 s_code_instruction *inst_find_from_addr_all_units(const void *addr);
 s_code_instruction *inst_find_from_idx(int idx);
@@ -44,3 +41,9 @@ s_code_instruction *inst_find_from_unit_and_idx(s_code_unit *unit, int idx);
 
 s_code_unit *unit_find_from_addr(const void *addr);
 s_code_unit *unit_find_from_name(const char *name);
+
+void set_breakpoint(s_code_instruction *inst);
+void reset_breakpoint(s_code_instruction *inst);
+
+void set_label(s_code_instruction *inst, const char *label);
+bool reset_label(s_code_instruction *inst);

@@ -32,7 +32,7 @@ static int _inst_add(s_code_instruction *inst) {
 
 static int _inst_rm(s_code_instruction *inst) {
   if (!inst->next && (uint8_t*)get_reg(REG_RIP) == inst->address)
-    return p_warning("Cannot remove last instruction while executing it\n");
+    return p_error("Cannot remove last instruction while executing it\n");
   _adjust_RIP(inst->address, inst->size, 0);
   rm_instruction(context.cur_unit, inst);
   return 0;
@@ -64,7 +64,6 @@ static struct {
    {NULL, NULL}};
 
 int cmd_inst(int ac, char **av) {
-  e_parsed_type inst_t = PARSED_ADDR;
   u_parsed_val inst_v;
   s_code_instruction *inst;
 
@@ -73,10 +72,11 @@ int cmd_inst(int ac, char **av) {
   if (ac < 2) {
     if (!is_running())
       return p_error("Please specify a line index when code isn't running\n");
+    inst_v.type = PARSED_ADDR;
     inst_v.addr = get_reg(REG_RIP);
   } else
-    inst_t = get_addr_or_idx(av[1], &inst_v);
-  switch (inst_t) {
+    get_addr_or_idx(av[1], &inst_v);
+  switch (inst_v.type) {
   case PARSED_ADDR:
     if ((inst = inst_find_from_addr((void*)inst_v.addr)) == NULL)
       return p_error("No instruction matches address 0x%lx"

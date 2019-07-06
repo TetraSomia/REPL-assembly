@@ -9,14 +9,16 @@ static void _disas_unit(s_code_unit *unit) {
   if (is_running())
     rip = (void*)get_reg(REG_RIP);
   for (s_code_instruction *i = unit->insts; i; i = i->next) {
-    if (i->label)
-      printf("%s:\n", i->label);
     char prefix[3] = "  ";
     if (rip == i->address)
       strcpy(prefix, "=>");
     else if (i->breakpoint)
       strcpy(prefix, "* ");
-    printf("%d: %s %p\t%s\n", i->index, prefix, i->address, i->str_gen);
+    if (i->label)
+      printf("%d:\t   %s:\n\t%s %p\t%s\n", i->index, i->label, prefix,
+	     i->address, i->str_gen);
+    else
+      printf("%d:\t%s %p\t%s\n", i->index, prefix, i->address, i->str_gen);
   }
 }
 

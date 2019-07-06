@@ -21,13 +21,32 @@ bool is_running() {
   return true;
 }
 
-e_parsed_type get_addr_or_idx(const char *s, u_parsed_val *v) {
-  e_parsed_type t = PARSED_ERROR;
+int get_addr_or_idx(const char *s, u_parsed_val *v) {
 
+  v->type = PARSED_ERROR;
   if (strncmp(s, "0x", 2) == 0) {
     if (strlen(s) > 2 && sscanf(s, "%lx", &v->addr) == 1)
-      t = PARSED_ADDR;
+      v->type = PARSED_ADDR;
   } else if (sscanf(s, "%d", &v->idx) == 1)
-    t = PARSED_IDX;
-  return t;
+    v->type = PARSED_IDX;
+  return v->type == PARSED_ERROR ? 1 : 0;
+}
+
+s_code_instruction *get_inst_from_parsing(const u_parsed_val *v) {
+  s_code_instruction *inst = NULL;
+
+  switch (v->type) {
+  case PARSED_ADDR:
+    if ((inst = inst_find_from_addr((void*)v->addr)) == NULL)
+      p_error("No instruction matches address 0x%lx"
+                     " in the current unit\n", v->addr);
+    break;
+  case PARSED_IDX:
+    if ((inst = inst_find_from_idx(v->idx)) == NULL)
+      p_error("No instruction matches index %d in the current unit\n", v->idx);
+    break;
+  case PARSED_ERROR:
+    p_error("Instruction parsing failed (must be an index or address)\n");
+  }
+  return inst;
 }
