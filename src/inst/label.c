@@ -1,20 +1,19 @@
 #include <stdlib.h>
-#include <string.h>
-#include "code_unit.h"
+#include "repl.h"
+#include "inst_internal.h"
 
-void set_label(s_code_instruction *inst, const char *label) {
-  if (inst->label && strlen(label) < strlen(inst->label))
-    strcpy(inst->label, label);
-  else {
-    free(inst->label);
-    inst->label = xstrdup(label);
+int set_label(s_code_instruction *inst, const char *label) {
+  char *old = inst->label;
+  int err;
+
+  inst->label = (char*)label;
+  err = commit_code(context.cur_unit);
+  if (err) {
+    inst->label = old;
+    return 1;
   }
-}
-
-bool reset_label(s_code_instruction *inst) {
-  if (inst->label == NULL)
-    return false;
-  free(inst->label);
-  inst->label = NULL;
-  return true;
+  if (inst->label)
+    inst->label = xstrdup(inst->label);
+  free(old);
+  return 0;
 }

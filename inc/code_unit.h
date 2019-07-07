@@ -45,5 +45,5 @@ s_code_unit *unit_find_from_name(const char *name);
 void set_breakpoint(s_code_instruction *inst);
 void reset_breakpoint(s_code_instruction *inst);
 
-void set_label(s_code_instruction *inst, const char *label);
-bool reset_label(s_code_instruction *inst);
+int set_label(s_code_instruction *inst, const char *label);
+//bool reset_label(s_code_instruction *inst);

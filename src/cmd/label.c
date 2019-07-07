@@ -7,14 +7,30 @@
 
 static int _read_label(s_code_instruction *inst) {
   char *line;
+  int err = 0;
 
   puts("Type the label name:");
   line = readline("> ");
   if (line == NULL)
     return p_warning("Aborting instruction insertion\n");
-  //TODO check bad character and already defined
-  set_label(inst, line);
+  str_clear_sep(line);
+  if (str_is_empty(line) || str_is_comment(line))
+    err = p_error("Cannot insert empty or commented label\n");
+  if (!err)
+    err = set_label(inst, line);
   free(line);
+  return err;
+}
+
+static int _rm_label(s_code_instruction *inst) {
+  int err;
+
+  if (!inst->label)
+    return p_warning("No label to remove\n");
+  err = set_label(inst, NULL);
+  if (err)
+    return 1;
+  puts("Label removed");
   return 0;
 }
 
@@ -32,9 +48,6 @@ int cmd_label(int ac, char **av) {
     return 1;
   if (ac == 1)
     return _read_label(inst);
-  if (!reset_label(inst))
-    p_warning("No label to remove\n");
   else
-    puts("Label removed");
-  return 0;
+    return _rm_label(inst);
 }
