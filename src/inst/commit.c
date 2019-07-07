@@ -20,7 +20,8 @@ static void _update_insts(s_code_unit *unit,
     inst = inst->next;
   }
   if (inst || parsed_insts[i].inst)
-    fatal_err("Assert failed: number of insts and parsed_insts does not match");
+    fatal_err("Assert failed: number of insts and"
+	      "parsed_insts does not match\n");
 }
 
 static void _reset_breakpoints(s_code_unit *unit) {

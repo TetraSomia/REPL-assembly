@@ -33,3 +33,11 @@ void clear_term();
 */
 
 void assert_single_line(const char *s);
+
+/*
+** String manipulations and checks
+*/
+
+char *str_clear_sep(char *s);
+bool str_is_empty(const char *s);
+bool str_is_comment(const char *s);

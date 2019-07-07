@@ -23,6 +23,9 @@ static int _inst_add(s_code_instruction *inst) {
   line = readline("> ");
   if (line == NULL)
     return p_warning("Aborting instruction insertion\n");
+  str_clear_sep(line);
+  if (str_is_empty(line) || str_is_comment(line))
+    return p_error("Cannot insert empty or commented line\n");
   new_inst = add_instruction(context.cur_unit, inst, line);
   free(line);
   if (new_inst)
@@ -47,6 +50,9 @@ static int _inst_edit(s_code_instruction *inst) {
   line = readline("> ");
   if (line == NULL)
     return p_warning("Aborting instruction edition\n");
+  str_clear_sep(line);
+  if (str_is_empty(line) || str_is_comment(line))
+    return p_error("Cannot insert empty or commented line\n");
   err = edit_instruction(context.cur_unit, inst, line);
   free(line);
   if (!err)

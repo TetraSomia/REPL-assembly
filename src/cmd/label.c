@@ -12,7 +12,7 @@ static int _read_label(s_code_instruction *inst) {
   line = readline("> ");
   if (line == NULL)
     return p_warning("Aborting instruction insertion\n");
-  //TODO check bad character
+  //TODO check bad character and already defined
   set_label(inst, line);
   free(line);
   return 0;
