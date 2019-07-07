@@ -47,10 +47,11 @@ s_code_instruction *add_instruction(s_code_unit *unit,
   new_inst = _create_inst(prev_inst, next_inst, inst);
   if (!new_inst->prev)
     unit->insts = new_inst;
-  for (s_code_instruction *i = new_inst; i->next; i = i->next)
-    i->next->index = i->index + 1;
   err = commit_code(unit);
   if (err)
     _unlink_on_error(unit, new_inst);
+  else
+    for (s_code_instruction *i = new_inst; i->next; i = i->next)
+      i->next->index = i->index + 1;
   return err ? NULL : new_inst;
 }
