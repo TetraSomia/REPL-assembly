@@ -8,11 +8,9 @@ GLOBAL:
 LOCAL:
 
 - error check: try assemble with no inst
-- parse nasm error line to show problematic instruction(s)
 - sigaltstack
 - crash when modifying non scratch registers, why sigsegv not caught ?
 
 COMMANDS:
 print (**)
-breakpoint (*)
 step (***)

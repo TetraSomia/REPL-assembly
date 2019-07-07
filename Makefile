@@ -29,6 +29,7 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_INST)remove.c	\
 		$(SRC_INST)commit.c	\
 		$(SRC_INST)assembly.c	\
+		$(SRC_INST)nasm_error.c	\
 		$(SRC_INST)dump.c	\
 		$(SRC_INST)find.c	\
 		$(SRC_INST)breakpoint.c	\

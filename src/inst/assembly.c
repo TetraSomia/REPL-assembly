@@ -32,7 +32,7 @@ static void _write_code(s_code_instruction *insts) {
     fatal_libc_err("fclose(\"%s\") failed\n", _path_file_in);
 }
 
-static int _assemble() {
+static int _assemble(s_code_unit *unit) {
   const char cmd_fmt[] = "nasm -Xgnu -Werror -w+all -s -a -fbin -o %s %s";
   char cmd[sizeof(cmd_fmt) + sizeof(_path_file_in) + sizeof(_path_file_out)];
   FILE *file;
@@ -50,7 +50,7 @@ static int _assemble() {
     if (is_error == 0)
       fprintf(stderr, "An error occured when assembling:\n");
     is_error = 1;
-    fprintf(stderr, "%s", line);
+    parse_nasm_error(unit, line);
   }
   if (errno != 0)
     fatal_libc_err("getline() on popen() failed\n");
@@ -146,7 +146,7 @@ s_parsed_inst *assemble(s_code_unit *unit) {
     cleanup_registered = true;
   }
   _write_code(unit->insts);
-  if (_assemble() != 0)
+  if (_assemble(unit) != 0)
     return NULL;
   _read_assembly(unit);
   return _disassemble();
