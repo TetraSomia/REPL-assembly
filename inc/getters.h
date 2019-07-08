@@ -17,7 +17,8 @@ bool is_running();
 typedef enum {
 	      PARSED_ERROR,
 	      PARSED_ADDR,
-	      PARSED_IDX
+	      PARSED_IDX,
+	      PARSED_REG
 } e_parsed_type;
 
 typedef struct {
@@ -25,8 +26,9 @@ typedef struct {
   union {
     uint64_t addr;
     int idx;
+    e_register reg;
   };
 } u_parsed_val;
 
-int get_addr_or_idx(const char *s, u_parsed_val *v);
+int parse_str_to_val(const char *s, u_parsed_val *v);
 s_code_instruction *get_inst_from_parsing(const u_parsed_val *v);

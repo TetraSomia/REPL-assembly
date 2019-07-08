@@ -29,7 +29,7 @@ static char **_tokenize_args(const char *line, size_t line_size, int *ac_ptr) {
   memcpy(tmp_line, line, line_size);
   tmp_tok = strtok(tmp_line, " ");
   while (tmp_tok) {
-    nbr_toks ++;
+    nbr_toks++;
     toks = xrealloc(toks, sizeof(*toks) * (nbr_toks + 1));
     toks[nbr_toks - 1] = xstrdup(tmp_tok);
     toks[nbr_toks] = NULL;

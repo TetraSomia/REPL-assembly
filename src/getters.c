@@ -21,7 +21,7 @@ bool is_running() {
   return true;
 }
 
-int get_addr_or_idx(const char *s, u_parsed_val *v) {
+int parse_str_to_val(const char *s, u_parsed_val *v) {
 
   v->type = PARSED_ERROR;
   if (strncmp(s, "0x", 2) == 0) {
@@ -29,6 +29,14 @@ int get_addr_or_idx(const char *s, u_parsed_val *v) {
       v->type = PARSED_ADDR;
   } else if (sscanf(s, "%d", &v->idx) == 1)
     v->type = PARSED_IDX;
+  else {
+    for (e_register r = REG_FIRST; r < REG_LAST; ++r)
+      if (strcasecmp(reg_names[r], s) == 0) {
+	v->reg = r;
+	v->type = PARSED_REG;
+	break;
+      }
+  }
   return v->type == PARSED_ERROR ? 1 : 0;
 }
 
@@ -45,8 +53,9 @@ s_code_instruction *get_inst_from_parsing(const u_parsed_val *v) {
     if ((inst = inst_find_from_idx(v->idx)) == NULL)
       p_error("No instruction matches index %d in the current unit\n", v->idx);
     break;
-  case PARSED_ERROR:
+  default:
     p_error("Instruction parsing failed (must be an index or address)\n");
+    break;
   }
   return inst;
 }

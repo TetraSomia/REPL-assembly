@@ -81,7 +81,7 @@ int cmd_inst(int ac, char **av) {
     inst_v.type = PARSED_ADDR;
     inst_v.addr = get_reg(REG_RIP);
   } else
-    get_addr_or_idx(av[1], &inst_v);
+    parse_str_to_val(av[1], &inst_v);
   switch (inst_v.type) {
   case PARSED_ADDR:
     if ((inst = inst_find_from_addr((void*)inst_v.addr)) == NULL)
@@ -94,8 +94,8 @@ int cmd_inst(int ac, char **av) {
       return p_error("No instruction matches index %d in the current unit\n",
 		     inst_v.idx);
     break;
-  case PARSED_ERROR:
-    return p_error("Third parameter not parsed (must be index or address)\n");
+  default:
+    return p_error("Third parameter not parsed (must be an index or address)\n");
   }
   for (int i = 0; _sub_cmds[i].name; ++i)
     if (strcmp(_sub_cmds[i].name, av[0]) == 0)

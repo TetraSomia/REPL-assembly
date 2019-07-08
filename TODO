@@ -10,7 +10,18 @@ LOCAL:
 - error check: try assemble with no inst
 - sigaltstack
 - crash when modifying non scratch registers, why sigsegv not caught ?
+- print: How to handle invalid addresses ?
+  * check bounds (limit to stack and code_units)
+  * catch SIGSEGV
+  * do nothing and let it crash
 
 COMMANDS:
 print (**)
 step (***)
+stack (**)
+set (**)
+
+Command formats:
+print (<reg> | <addr>) (s | x | d) [(1 | 2 | 4 | 8) [<nbr>]]
+stack [all | frame | <+-size>]
+set (<reg> | <addr>) (1 | 2 | 4 | 8) <hex value>
