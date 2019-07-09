@@ -15,6 +15,12 @@ static void _print_global_help() {
        "an instruction to index=1 will create an\n\tinstruction with index=2, "
        "then specifying index=-1 is allowed\n\tto emplace a"
        " first instruction.\n");
+  puts("print (<reg> | <addr>) [(s | x | d) [(1 | 2 | 4 | 8) [<iter>]]]\n\t"
+       "Print the content of a register or at a particular address.\n\t"
+       "The format can be a string (s), a decimal value (d) or a\n\thexadecimal"
+       " value (x), default is hexadecimal.\n\tThe word size can be specified "
+       "(default is 8).\n\tFinally, it is possible to print <iter> words"
+       " (starting\n\tat the address, or within the register).\n");
   puts("Aliases: first letter of the command");
 }
 

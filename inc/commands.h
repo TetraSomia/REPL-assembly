@@ -10,3 +10,4 @@ int cmd_disas(int ac, char **av);
 int cmd_inst(int ac, char **av);
 int cmd_label(int ac, char **av);
 int cmd_breakpoint(int ac, char **av);
+int cmd_print(int ac, char **av);

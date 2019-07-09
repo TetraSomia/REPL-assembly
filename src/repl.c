@@ -18,7 +18,8 @@ static struct {
      {"disas", "d", &cmd_disas},
      {"inst", "i", &cmd_inst},
      {"label", "l", &cmd_label},
-     {"breakpoint", "b", &cmd_breakpoint}};
+     {"breakpoint", "b", &cmd_breakpoint},
+     {"print", "p", &cmd_print}};
 
 static char **_tokenize_args(const char *line, size_t line_size, int *ac_ptr) {
   char tmp_line[line_size];

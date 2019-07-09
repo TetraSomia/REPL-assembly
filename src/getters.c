@@ -59,3 +59,17 @@ s_code_instruction *get_inst_from_parsing(const u_parsed_val *v) {
   }
   return inst;
 }
+
+uint64_t *get_ptr_from_parsing(const u_parsed_val *v) {
+  switch (v->type) {
+  case PARSED_ADDR:
+    return (uint64_t*)v->addr;
+  case PARSED_REG:
+    if (!is_running())
+      p_error("Register parsing failed: No code is running\n");
+    return get_reg_ptr(v->reg);
+  default:
+    p_error("Pointer parsing failed (must be a register or address)\n");
+    return NULL;
+  }
+}

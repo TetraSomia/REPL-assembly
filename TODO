@@ -22,6 +22,5 @@ stack (**)
 set (**)
 
 Command formats:
-print (<reg> | <addr>) (s | x | d) [(1 | 2 | 4 | 8) [<nbr>]]
 stack [all | frame | <+-size>]
 set (<reg> | <addr>) (1 | 2 | 4 | 8) <hex value>
