@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "getters.h"
 
 typedef enum {
 	      PRINT_FMT_ERR,
@@ -11,4 +12,5 @@ typedef enum {
 
 e_print_fmt print_parse_format(const char *s);
 char print_parse_wordsize(const char *s);
-void print_mem(uint64_t *data, e_print_fmt fmt, char wordsize, size_t iter);
+int print_addr(uint64_t *addr, e_print_fmt fmt, char wordsize, size_t iter);
+int print_reg(e_register reg, e_print_fmt fmt, char wordsize, size_t iter);

@@ -4,24 +4,23 @@
 #include "print.h"
 
 int cmd_print(int ac, char **av) {
-  u_parsed_val inst_v;
-  uint64_t *data;
+  u_parsed_val data;
   e_print_fmt fmt = PRINT_FMT_HEX;
   char wordsize = 8;
   size_t iter = 1;
 
   if (ac < 1)
     return p_error("Please specify a location (register or address)\n");
-  if (parse_str_to_val(av[0], &inst_v) != 0)
+  if (parse_str_to_val(av[0], &data) != 0 || data.type == PARSED_IDX)
     return p_error("\'%s\' cannot be parsed into a register or address\n",
 		   av[0]);
-  if ((data = get_ptr_from_parsing(&inst_v)) == NULL)
-    return 1;
+  if (data.type == PARSED_REG && !is_running())
+    return p_error("Register parsing failed: No code is running\n");
   if (ac > 1)
     if ((fmt = print_parse_format(av[1])) == PRINT_FMT_ERR)
       return p_error("\'%s\' cannot be parsed into a valid format (s/x/d)\n",
 		     av[1]);
-  if (fmt == PRINT_FMT_STR && inst_v.type == PARSED_REG)
+  if (fmt == PRINT_FMT_STR && data.type == PARSED_REG)
       return p_error("Cannot use string format for register\n");
   if (ac > 2) {
     if (fmt == PRINT_FMT_STR)
@@ -32,8 +31,9 @@ int cmd_print(int ac, char **av) {
   }
   if (ac > 3 && sscanf(av[3], "%ld", &iter) != 1)
     return p_error("\'%s\' cannot be parsed into an integer\n", av[3]);
-  if (iter * wordsize > 8 && inst_v.type == PARSED_REG)
+  if (iter * wordsize > 8 && data.type == PARSED_REG)
     return p_error("You cannot print more than 8 bytes per register\n");
-  print_mem(data, fmt, wordsize, iter);
-  return 0;
+  if (data.type == PARSED_REG)
+    return print_reg(data.reg, fmt, wordsize, iter);
+  return print_addr((uint64_t*)data.addr, fmt, wordsize, iter);
 }
