@@ -30,13 +30,8 @@ char print_parse_wordsize(const char *s) {
 }
 
 static void _print_s(const char *s) {
-  const char* const nonprint_names[] = {"\\a",
-					"\\b",
-					"\\t",
-					"\\n",
-					"\\v",
-					"\\f",
-					"\\r"};
+  const char* const nonprint_names[] =
+    {"\\a", "\\b", "\\t", "\\n", "\\v", "\\f", "\\r"};
 
   printf("%p:\t", s);
   while (*s) {
@@ -69,10 +64,18 @@ static void _dump_int(uint64_t *addr, char wordsize, bool hex) {
 }
 
 static void _print_int(uint64_t *addr, char wordsize, size_t iter, bool hex) {
-  (void)addr;
-  (void)wordsize;
-  (void)iter;
-  (void)hex;
+  uint8_t **byte_addr = (uint8_t**)&addr;
+
+  for (size_t i = 0; i < iter; ++i) {
+    if ((i * wordsize) % 8 == 0)
+      printf("%p:\t", addr);
+    else
+      printf(" ");
+    _dump_int(addr, wordsize, hex);
+    if (((i + 1) * wordsize) % 8 == 0 || i + 1 == iter)
+      printf("\n");
+    *byte_addr += wordsize;
+  }
 }
 
 int print_addr(uint64_t *addr, e_print_fmt fmt, char wordsize, size_t iter) {
@@ -93,14 +96,15 @@ int print_addr(uint64_t *addr, e_print_fmt fmt, char wordsize, size_t iter) {
 }
 
 int print_reg(e_register reg, e_print_fmt fmt, char wordsize, size_t iter) {
-  uint8_t *addr;
+  uint64_t *addr;
+  uint8_t **byte_addr = (uint8_t**)&addr;
   
   printf("%s:\t", reg_names[reg]);
-  addr = (uint8_t*)get_reg_ptr(reg);
+  addr = get_reg_ptr(reg);
   for (size_t i = 0; i < iter; ++i) {
-    _dump_int((uint64_t*)addr, wordsize, fmt == PRINT_FMT_HEX);
+    _dump_int(addr, wordsize, fmt == PRINT_FMT_HEX);
     printf(" ");
-    addr += wordsize;
+    *byte_addr += wordsize;
   }
   printf("\n");
   return 0;
