@@ -7,6 +7,7 @@
 #define DEFAULT_STACK_SIZE 16384
 
 typedef struct {
+  void *sighandler_stack;
   void *stack;
   size_t stack_size;
   ucontext_t *exec_ctx;

@@ -110,7 +110,7 @@ void reset_exec_sighandlers() {
 void set_exec_sighandlers() {
   struct sigaction sigact_struct = {0};
 
-  sigact_struct.sa_flags = SA_SIGINFO;
+  sigact_struct.sa_flags = SA_SIGINFO | SA_ONSTACK;
   sigact_struct.sa_sigaction = &_breakpoint_handler;
   sigaction(SIGTRAP, &sigact_struct, NULL);
   sigaction(SIGINT, &sigact_struct, NULL);

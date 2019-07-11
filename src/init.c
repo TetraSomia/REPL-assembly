@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include "repl.h"
 #include "context_switch.h"
 
@@ -13,6 +14,7 @@ static void _free_context() {
   rm_instructions(&context.units[0]);
   free(context.units);
   free(context.stack);
+  free(context.sighandler_stack);
 }
 
 void init_context() {
@@ -20,6 +22,7 @@ void init_context() {
 
   context.stack_size = DEFAULT_STACK_SIZE;
   context.stack = xmalloc(context.stack_size);
+  context.sighandler_stack = xmalloc(context.stack_size);
   context.exec_ctx = NULL;
   context.units = xmalloc(sizeof(s_code_unit) * 2);
   context.units[1].name = NULL;
@@ -44,5 +47,13 @@ void init_context() {
   add_instruction(&context.units[0], inst_find_from_idx(3), "ret");
   set_breakpoint(inst_find_from_idx(2));
   set_breakpoint(inst_find_from_idx(3));
+
+  stack_t s;
+  s.ss_sp = context.sighandler_stack;
+  s.ss_size = context.stack_size;
+  s.ss_flags = 0;
+  if (sigaltstack(&s, NULL) != 0)
+    fatal_libc_err("sigaltstack() failed\n");
+  
   atexit(&_free_context);
 }
