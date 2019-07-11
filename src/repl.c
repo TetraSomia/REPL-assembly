@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 #include "repl.h"
 #include "commands.h"
 #include "context_switch.h"
@@ -55,6 +56,7 @@ void repl() {
   int ac;
   int cmd_ret;
 
+  rl_bind_key('\t', rl_insert);
   if (getcontext(ctx_get_repl_ctx()) != 0)
     fatal_libc_err("getcontext(&_repl_ctx) failed\n");
   ctx_handle_ctx_update();
@@ -68,8 +70,10 @@ void repl() {
     cmd_ret = -1;
     for (size_t i = 0; i < sizeof(_cmds) / sizeof(*_cmds); ++i) {
       if (strcmp(_cmds[i].name, toks[0]) == 0 ||
-	  strcmp(_cmds[i].short_name, toks[0]) == 0)
+	  strcmp(_cmds[i].short_name, toks[0]) == 0) {
+	add_history(line);
 	cmd_ret = _cmds[i].func(ac, toks + 1);
+      }
     }
     if (cmd_ret == -1)
       fprintf(stderr, "Command not found: %s\n", toks[0]);
