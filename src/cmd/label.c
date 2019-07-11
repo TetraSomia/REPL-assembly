@@ -34,7 +34,7 @@ static int _rm_label(s_code_instruction *inst) {
   return 0;
 }
 
-int cmd_label(int ac, char **av) {
+int cmd_label(int ac, char* const *av) {
   u_parsed_val inst_v;
   s_code_instruction *inst;
 

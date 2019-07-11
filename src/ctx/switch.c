@@ -24,7 +24,8 @@ void ctx_resume_exec() {
 }
 
 void ctx_abort_exec() {
-  _ctx_aborted = true;
+  if (_ctx_running)
+    _ctx_aborted = true;
   if (setcontext(&_repl_ctx) != 0)
     fatal_libc_err("setcontext(&_repl_ctx) failed\n");
 }
@@ -34,10 +35,8 @@ ucontext_t *ctx_get_repl_ctx() {
 }
 
 void ctx_handle_ctx_update() {
-  if (!_ctx_running)
-    return;
   reset_exec_sighandlers();
-  if (_ctx_stopped)
+  if (!_ctx_running || _ctx_stopped)
     return;
   if (!_ctx_aborted)
     puts("Code exited normally");    

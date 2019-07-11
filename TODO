@@ -5,15 +5,16 @@ GLOBAL:
 - multi code unit
 - symbols
 
+
+
 LOCAL:
 
-- arrow up/down for history
-- print: How to handle invalid addresses ?
-  * check bounds (limit to stack and code_units)
-  * catch SIGSEGV
-  * do nothing and let it crash
+(none)
+
+
 
 COMMANDS:
+
 step (***)
 stack (**)
 set (**)

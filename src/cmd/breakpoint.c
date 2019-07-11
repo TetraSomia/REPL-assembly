@@ -2,7 +2,7 @@
 #include "repl.h"
 #include "getters.h"
 
-int cmd_breakpoint(int ac, char **av) {
+int cmd_breakpoint(int ac, char* const *av) {
   u_parsed_val inst_v;
   s_code_instruction *inst;
 

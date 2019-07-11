@@ -21,6 +21,15 @@ bool is_running() {
   return true;
 }
 
+char *parse_dereferencing(char *s, int *nbr_deref) {
+  *nbr_deref = 0;
+  while (*s == '*') {
+    s++;
+    (*nbr_deref)++;
+  }
+  return s;
+}
+
 int parse_str_to_val(const char *s, u_parsed_val *v) {
 
   v->type = PARSED_ERROR;

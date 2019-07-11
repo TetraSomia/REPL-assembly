@@ -44,7 +44,7 @@ static void _disas_unit(s_code_unit *unit) {
   }
 }
 
-int cmd_disas(int ac, char **av) {
+int cmd_disas(int ac, char* const *av) {
   (void)ac;
   (void)av;
   //TODO make multi code_unit compatible

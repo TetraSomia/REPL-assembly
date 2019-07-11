@@ -69,7 +69,7 @@ static struct {
    {"edit", &_inst_edit},
    {NULL, NULL}};
 
-int cmd_inst(int ac, char **av) {
+int cmd_inst(int ac, char* const *av) {
   u_parsed_val inst_v;
   s_code_instruction *inst;
 

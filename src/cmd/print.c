@@ -3,7 +3,9 @@
 #include "getters.h"
 #include "print.h"
 
-int cmd_print(int ac, char **av) {
+int cmd_print(int ac, char* const *av) {
+  char *deref_val;
+  int nbr_deref;
   u_parsed_val data;
   e_print_fmt fmt = PRINT_FMT_HEX;
   char wordsize = 8;
@@ -11,11 +13,13 @@ int cmd_print(int ac, char **av) {
 
   if (ac < 1)
     return p_error("Please specify a location (register or address)\n");
-  if (parse_str_to_val(av[0], &data) != 0 || data.type == PARSED_IDX)
+  deref_val = parse_dereferencing(av[0], &nbr_deref);
+  if (parse_str_to_val(deref_val, &data) != 0 || data.type == PARSED_IDX)
     return p_error("\'%s\' cannot be parsed into a register or address\n",
-		   av[0]);
+		   deref_val);
   if (data.type == PARSED_REG && !is_running())
     return p_error("Register parsing failed: No code is running\n");
+  do_dereferencing(&data, nbr_deref);
   if (ac > 1)
     if ((fmt = print_parse_format(av[1])) == PRINT_FMT_ERR)
       return p_error("\'%s\' cannot be parsed into a valid format (s/x/d)\n",

@@ -2,7 +2,7 @@
 #include "context_switch.h"
 #include "repl.h"
 
-int cmd_cont(int ac, char **av) {
+int cmd_cont(int ac, char* const *av) {
   (void)ac;
   (void)av;
   ctx_resume_exec();

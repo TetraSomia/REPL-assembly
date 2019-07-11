@@ -24,7 +24,7 @@ static void _print_global_help() {
   puts("Aliases: first letter of the command");
 }
 
-int cmd_help(int ac, char **av) {
+int cmd_help(int ac, char* const *av) {
   (void)av;
   if (ac == 0)
     _print_global_help();

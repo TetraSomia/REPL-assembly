@@ -26,6 +26,7 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_ROOT)unit_finder.c\
 		$(SRC_ROOT)reg_names.c	\
 		$(SRC_ROOT)print.c	\
+		$(SRC_ROOT)deref.c	\
 		$(SRC_INST)add.c	\
 		$(SRC_INST)edit.c	\
 		$(SRC_INST)remove.c	\

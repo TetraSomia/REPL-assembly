@@ -33,3 +33,6 @@ typedef struct {
 int parse_str_to_val(const char *s, u_parsed_val *v);
 s_code_instruction *get_inst_from_parsing(const u_parsed_val *v);
 uint64_t *get_ptr_from_parsing(const u_parsed_val *v);
+char *parse_dereferencing(char *s, int *nbr_deref);
+
+void do_dereferencing(u_parsed_val *v, int nbr_deref);
