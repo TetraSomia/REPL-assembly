@@ -27,6 +27,11 @@ static void _print_global_help() {
        "Set a register or the content of an address at a particular value.\n\t"
        "Star operator (*) can be used to dereference once or multiple times\n\t"
        "the register or address.\n");
+  puts("stack [all | frame | <+-offset>]\n\t"
+       "Print stack content depending on 3 different modes:\n\t"
+       "all: print the whole allocated stack space (stop when reaching 0's)\n\t"
+       "frame: if RBP is set correctly, print the section between RBP and RSP\n"
+       "\toffset=x: print x lines before and after RSP (default with x=5)\n");
   puts("Aliases: first letter of the command (except for \'set\', \'stack\' "
        "has priority)");
 }
