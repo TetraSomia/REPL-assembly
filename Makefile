@@ -18,15 +18,17 @@ SRC_INST	=	./src/inst/
 
 SRC_CTX		=	./src/ctx/
 
+SRC_UTILS	=	./src/utils/
+
 SRCS	=	$(SRC_ROOT)main.c	\
-		$(SRC_ROOT)utils.c	\
 		$(SRC_ROOT)init.c	\
 		$(SRC_ROOT)repl.c	\
-		$(SRC_ROOT)getters.c	\
-		$(SRC_ROOT)unit_finder.c\
-		$(SRC_ROOT)reg_names.c	\
-		$(SRC_ROOT)print.c	\
-		$(SRC_ROOT)deref.c	\
+		$(SRC_UTILS)misc.c	\
+		$(SRC_UTILS)getters.c	\
+		$(SRC_UTILS)unit_finder.c \
+		$(SRC_UTILS)reg_names.c	\
+		$(SRC_UTILS)print.c	\
+		$(SRC_UTILS)deref.c	\
 		$(SRC_INST)add.c	\
 		$(SRC_INST)edit.c	\
 		$(SRC_INST)remove.c	\

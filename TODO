@@ -1,24 +1,14 @@
-GLOBAL:
-
-- code loop (probably ncurses)
-- libdl
 - multi code unit
 - symbols
-
-
-
-LOCAL:
-
-(none)
-
+- libdl
+- code loop (probably ncurses)
 
 
 COMMANDS:
 
-step (***)
 stack (**)
-set (**)
+unit (*)
+step (***)
 
 Command formats:
 stack [all | frame | <+-size>]
-set (<reg> | <addr>) (1 | 2 | 4 | 8) <hex value>
