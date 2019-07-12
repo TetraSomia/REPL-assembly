@@ -23,12 +23,6 @@ void *xmalloc(size_t size);
 char *xstrdup(const char *s);
 
 /*
-** Term utils
-*/
-
-void clear_term();
-
-/*
 ** Assertions
 */
 
