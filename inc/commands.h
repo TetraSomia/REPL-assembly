@@ -11,3 +11,4 @@ int cmd_inst(int ac, char* const *av);
 int cmd_label(int ac, char* const *av);
 int cmd_breakpoint(int ac, char* const *av);
 int cmd_print(int ac, char* const *av);
+int cmd_set(int ac, char* const *av);
