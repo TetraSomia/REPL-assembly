@@ -1,8 +1,8 @@
 #include "repl.h"
 
 s_code_instruction *inst_find_from_addr_all_units(const void *addr) {
-  for (int i = 0; context.units[i].name; ++i)
-    for (s_code_instruction *inst = context.units[i].insts;
+  for (int i = 0; context.units[i]; ++i)
+    for (s_code_instruction *inst = context.units[i]->insts;
 	 inst; inst = inst->next)
       if (inst->address == addr)
 	return inst;

@@ -6,7 +6,7 @@ static void _print_global_help() {
        "on the 'cmd'\n\tcommand if specified.\n");
   puts("run\n\tStart and run the assembly code.\n");
   puts("continue\n\tResume execution after a breakpoint hit.\n");
-  puts("disas\n\tDisassemble the code of the current unit.\n");
+  puts("disas\n\tDisassemble the code of the current code unit.\n");
   puts("breakpoint (<index> | <addr>) [!]\n\tAdd or remove a breakpoint.\n");
   puts("label (<index> | <addr>) [!]\n\tAdd or remove a label.\n");
   puts("inst (add | rm | edit) [<index> | <addr>]\n\tAdd, remove, or edit a "
@@ -32,15 +32,18 @@ static void _print_global_help() {
        "all: print the whole allocated stack space (stop when reaching 0's)\n\t"
        "frame: if RBP is set correctly, print the section between RBP and RSP\n"
        "\toffset=x: print x lines before and after RSP (default with x=5)\n");
+  puts("unit [<name>]\n\tWithout parameter, shows the units available and "
+       "highlight the active\n\tone. If a code unit name is provided, sets this"
+       " unit as active. If the\n\tunit does not exist, ask if we want to"
+       " create it. A code unit can be\n\tseen as a new assembly source file or"
+       " as a new function.\n");
   puts("Aliases: first letter of the command (except for \'set\', \'stack\' "
        "has priority)");
 }
 
 int cmd_help(int ac, char* const *av) {
   (void)av;
-  if (ac == 0)
-    _print_global_help();
-  else
-    puts("Not written yet, you'll have to look into the code");
+  (void)ac;
+  _print_global_help();
   return 0;
 }

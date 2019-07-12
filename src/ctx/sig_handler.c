@@ -13,13 +13,6 @@ static inline void _reset_breakpoint(s_code_instruction *inst) {
     set_breakpoint(inst);
 }
 
-static void _set_cur_unit() {
-  s_code_unit *cur_unit = unit_find_from_addr((void*)get_reg(REG_RIP));
-
-  if (cur_unit != NULL)
-    context.cur_unit = cur_unit;
-}
-
 static void _breakpoint_handler(int sig, siginfo_t *info, void *raw_context) {
   ucontext_t *ucontext = (ucontext_t*)raw_context;
   static s_code_instruction *inst = NULL;
@@ -30,7 +23,7 @@ static void _breakpoint_handler(int sig, siginfo_t *info, void *raw_context) {
     _reset_breakpoint(inst);
     return;
   }
-  _set_cur_unit();
+  update_code_unit(unit_find_from_addr((void*)get_reg(REG_RIP)));
   if (sig == SIGTRAP) {
     *get_reg_ptr(REG_RIP) -= 1; //reset RIP to inst first byte
     printf("Breakpoint hit (%p)\n", (void*)get_reg(REG_RIP));
@@ -39,7 +32,7 @@ static void _breakpoint_handler(int sig, siginfo_t *info, void *raw_context) {
     fprintf(stderr, "Execution stopped manually\n");
   ctx_resume_repl();
   if (sig == SIGTRAP) {
-    inst = inst_find_from_addr((void*)get_reg(REG_RIP));
+    inst = inst_find_from_addr_all_units((void*)get_reg(REG_RIP));
     if (!inst)
       fatal_err("Instruction not found from RIP\n");
     *(inst->address) = inst->opcodes[0]; //replace breakpoint by inst first byte
@@ -88,7 +81,7 @@ static void _crash_handler(int sig, siginfo_t *info, void *raw_context) {
 	    {SIGSEGV, "SIGSEGV", sys_siglist[SIGSEGV], code_segv}};
 
   context.exec_ctx = ucontext;
-  _set_cur_unit();
+  update_code_unit(unit_find_from_addr((void*)get_reg(REG_RIP)));
   for (size_t i = 0; i < sizeof(strs) / sizeof(*strs); ++i)
     if (sig == strs[i].signum) {
       fprintf(stderr, "Crash of execution at: %p\nDue to %s: %s: ",

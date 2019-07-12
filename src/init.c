@@ -1,5 +1,4 @@
 #include <sys/mman.h>
-#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
@@ -9,52 +8,41 @@
 s_context context;
 
 static void _free_context() {
-  free(context.units[0].name);
-  munmap(context.units[0].code, context.units[0].code_max_size);
-  rm_instructions(&context.units[0]);
+  for (int i = 0; context.units[i]; ++i) {
+    free(context.units[i]->name);
+    munmap(context.units[i]->code, context.units[i]->code_max_size);
+    rm_instructions(context.units[i]);
+    free(context.units[i]);
+  }
   free(context.units);
   free(context.stack);
   free(context.sighandler_stack);
 }
 
 void init_context() {
-  int pagesize = getpagesize();
+  stack_t s;
 
   context.stack_size = DEFAULT_STACK_SIZE;
   context.stack = xmalloc(context.stack_size);
   memset(context.stack, 0, context.stack_size);
+
   context.sighandler_stack = xmalloc(context.stack_size);
-  context.exec_ctx = NULL;
-  context.units = xmalloc(sizeof(s_code_unit) * 2);
-  context.units[1].name = NULL;
-  context.cur_unit = context.units;
-
-  context.units[0].name = xstrdup("main");
-  pagesize = getpagesize();
-  context.units[0].code = mmap(NULL, pagesize,
-			       PROT_READ | PROT_WRITE | PROT_EXEC,
-			       MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-  context.units[0].code_size = 0;
-  context.units[0].code_max_size = pagesize;
-  context.units[0].insts = NULL;
-  add_instruction(&context.units[0], NULL, "mov rax, 0xdeadbeef");
-  //add_instruction(&context.units[0], NULL, "loop:\njmp loop"); //infinite loop
-  //add_instruction(&context.units[0], NULL, "mov rax, [rax]"); //SIGSEGV
-  //add_instruction(&context.units[0], NULL, "ud2"); //SIGILL
-  //add_instruction(&context.units[0], NULL, "div rax"); //SIGFPE
-  add_instruction(&context.units[0], inst_find_from_idx(0), "push rax");
-  add_instruction(&context.units[0], inst_find_from_idx(1), "call rsi");
-  add_instruction(&context.units[0], inst_find_from_idx(2), "pop rax");
-  add_instruction(&context.units[0], inst_find_from_idx(3), "ret");
-  set_breakpoint(inst_find_from_idx(2));
-  set_breakpoint(inst_find_from_idx(3));
-
-  stack_t s;
   s.ss_sp = context.sighandler_stack;
   s.ss_size = context.stack_size;
   s.ss_flags = 0;
   if (sigaltstack(&s, NULL) != 0)
     fatal_libc_err("sigaltstack() failed\n");
+
+  context.exec_ctx = NULL;
+  context.cur_unit = add_unit("main");  
+
+  //TODO remove test instructions and breakpoints
+  add_instruction(context.cur_unit, NULL, "mov rax, 0xdeadbeef");
+  add_instruction(context.cur_unit, inst_find_from_idx(0), "push rax");
+  add_instruction(context.cur_unit, inst_find_from_idx(1), "call rsi");
+  add_instruction(context.cur_unit, inst_find_from_idx(2), "pop rax");
+  set_breakpoint(inst_find_from_idx(2));
+  set_breakpoint(inst_find_from_idx(3));
   
   atexit(&_free_context);
 }

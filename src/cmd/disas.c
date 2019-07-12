@@ -48,7 +48,7 @@ int cmd_disas(int ac, char* const *av) {
   (void)ac;
   (void)av;
   //TODO make multi code_unit compatible
-  printf("%s:\n", context.cur_unit->name);
+  printf("Code unit '%s':\n", context.cur_unit->name);
   _disas_unit(context.cur_unit);
   return 0;
 }

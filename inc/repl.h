@@ -11,8 +11,9 @@ typedef struct {
   void *stack;
   size_t stack_size;
   ucontext_t *exec_ctx;
-  s_code_unit *units;
+  s_code_unit **units;
   s_code_unit *cur_unit;
+  s_code_unit *exec_unit;
 } s_context;
 
 extern s_context context;

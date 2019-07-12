@@ -5,7 +5,8 @@
 int cmd_run(int ac, char* const *av) {
   (void)ac;
   (void)av;
-  ctx_run_unit(&context.units[0]);
+  //TODO run unit other than main
+  ctx_run_unit(unit_find_from_name("main"));
   puts("Warning: code is already running");
   return 0;
 }

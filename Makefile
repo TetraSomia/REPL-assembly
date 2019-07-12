@@ -26,7 +26,6 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_UTILS)error.c	\
 		$(SRC_UTILS)string.c	\
 		$(SRC_UTILS)getters.c	\
-		$(SRC_UTILS)unit_finder.c \
 		$(SRC_UTILS)reg_names.c	\
 		$(SRC_UTILS)print.c	\
 		$(SRC_UTILS)deref.c	\
@@ -40,6 +39,7 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_INST)find.c	\
 		$(SRC_INST)breakpoint.c	\
 		$(SRC_INST)label.c	\
+		$(SRC_INST)unit.c	\
 		$(SRC_CMD)help.c	\
 		$(SRC_CMD)dump.c	\
 		$(SRC_CMD)run.c		\
@@ -51,6 +51,7 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_CMD)print.c	\
 		$(SRC_CMD)set.c		\
 		$(SRC_CMD)stack.c	\
+		$(SRC_CMD)unit.c	\
 		$(SRC_CTX)switch.c	\
 		$(SRC_CTX)sig_handler.c
 
