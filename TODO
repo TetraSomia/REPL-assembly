@@ -1,3 +1,4 @@
+GLOBAL:
 - multi code unit
 - symbols
 - libdl
@@ -5,10 +6,5 @@
 
 
 COMMANDS:
-
-stack (**)
-unit (*)
-step (***)
-
-Command formats:
-stack [all | frame | <+-size>]
+- unit
+- step

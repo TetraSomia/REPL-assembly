@@ -72,6 +72,15 @@ static void _crash_handler(int sig, siginfo_t *info, void *raw_context) {
   const s_sicode code_segv[] = {{SEGV_MAPERR, "Address not mapped"},
 				{SEGV_ACCERR, "Invalid permissions"},
 				{0, NULL}};
+  const s_sicode code_general[] = {{SI_USER, "Sent by kill()"},
+				   {SI_KERNEL, "Sent by the kernel"},
+				   {SI_QUEUE, "Sent by sigqueue()"},
+				   {SI_TIMER, "POSIX timer expired"},
+				   {SI_MESGQ, "POSIX message queue state changed"},
+				   {SI_ASYNCIO, "AIO completed"},
+				   {SI_SIGIO, "Queued SIGIO"},
+				   {SI_TKILL, "Sent by tkill() or tgkill()"},
+				   {0, NULL}};
   const struct {int signum; const char *name;
     const char *desc; const s_sicode *codes;}
   strs[] = {{SIGFPE, "SIGFPE", sys_siglist[SIGFPE], code_fpe},
@@ -84,6 +93,16 @@ static void _crash_handler(int sig, siginfo_t *info, void *raw_context) {
     if (sig == strs[i].signum) {
       fprintf(stderr, "Crash of execution at: %p\nDue to %s: %s: ",
 	      (void*)get_reg(REG_RIP), strs[i].name, strs[i].desc);
+      bool was_general = false;
+      for (size_t j = 0; code_general[j].desc; ++j) {
+	if (info->si_code == code_general[j].no) {
+	  fprintf(stderr, "%s.\n", code_general[j].desc);
+	  was_general = true;
+	  break;
+	}
+      }
+      if (was_general)
+	break;
       for (size_t j = 0; strs[i].codes[j].desc; ++j) {
 	if (info->si_code == strs[i].codes[j].no) {
 	    fprintf(stderr, "%s", strs[i].codes[j].desc);

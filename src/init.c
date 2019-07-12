@@ -22,6 +22,7 @@ void init_context() {
 
   context.stack_size = DEFAULT_STACK_SIZE;
   context.stack = xmalloc(context.stack_size);
+  memset(context.stack, 0, context.stack_size);
   context.sighandler_stack = xmalloc(context.stack_size);
   context.exec_ctx = NULL;
   context.units = xmalloc(sizeof(s_code_unit) * 2);
