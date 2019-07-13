@@ -11,6 +11,12 @@ int commit_code(s_code_unit *unit);
 void parse_nasm_error(s_code_unit *unit, const char *err);
 
 /*
+** Symbol handling
+*/
+
+int parse_symbols(s_code_unit *unit);
+
+/*
 ** return NULL on NASM parsing error
 */
 

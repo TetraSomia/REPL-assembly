@@ -10,6 +10,7 @@ static s_code_instruction *_create_inst(s_code_instruction *prev_inst,
   new = xmalloc(sizeof(s_code_instruction));
   new->size = 0;
   new->str_gen = NULL;
+  new->str_sym = NULL;
   new->str_input = xstrdup(inst);
   new->label = NULL;
   new->address = NULL;
@@ -32,6 +33,7 @@ static void _unlink_on_error(s_code_unit *unit, s_code_instruction *inst) {
   if (inst->next)
     inst->next->prev = inst->prev;
   free(inst->str_input);
+  free(inst->str_sym);
   free(inst);
 }
 

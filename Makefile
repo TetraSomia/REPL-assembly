@@ -40,6 +40,7 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_INST)breakpoint.c	\
 		$(SRC_INST)label.c	\
 		$(SRC_INST)unit.c	\
+		$(SRC_INST)symbol.c	\
 		$(SRC_CMD)help.c	\
 		$(SRC_CMD)dump.c	\
 		$(SRC_CMD)run.c		\

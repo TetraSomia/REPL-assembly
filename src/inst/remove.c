@@ -4,6 +4,7 @@
 
 static void _free_inst_content_and_self(s_code_instruction *inst) {
   free(inst->str_gen);
+  free(inst->str_sym);
   free(inst->str_input);
   free(inst->label);
   free(inst);

@@ -33,6 +33,8 @@ static void _reset_breakpoints(s_code_unit *unit) {
 int commit_code(s_code_unit *unit) {
   s_parsed_inst *parsed_insts;
 
+  if (parse_symbols(unit) != 0)
+    return 1;
   parsed_insts = assemble(unit);
   if (parsed_insts == NULL)
     return 1;

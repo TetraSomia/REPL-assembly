@@ -9,6 +9,7 @@ typedef struct _s_code_instruction {
   uint8_t opcodes[MAX_INST_SIZE];
   size_t size;
   char *str_gen;
+  char *str_sym;
   char *str_input;
   char *label;
   uint8_t *address;

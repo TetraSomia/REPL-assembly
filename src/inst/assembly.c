@@ -25,7 +25,7 @@ static void _write_code(s_code_instruction *insts) {
       if (fprintf(file, "%s:\n", inst->label) < 0)
 	fatal_err("fprintf() failed\n");
     }
-    if (fprintf(file, "\t%s\n", inst->str_input) < 0)
+    if (fprintf(file, "\t%s\n", inst->str_sym) < 0)
       fatal_err("fprintf() failed\n");
   }
   if (fclose(file) == EOF)
