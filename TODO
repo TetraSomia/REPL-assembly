@@ -1,10 +1,13 @@
 GLOBAL:
 - symbols
+- command unit remove (!)
 - libdl
 - mmap realloc
 - run command multi-unit
 - code loop (probably ncurses)
 
+ERROR HANDLING:
+- code unit name: label, <8bytes regs (eax, al...)
 
 COMMANDS:
 - step

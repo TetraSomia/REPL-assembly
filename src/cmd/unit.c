@@ -31,7 +31,8 @@ int cmd_unit(int ac, char* const *av) {
   else {
     unit = unit_find_from_name(av[0]);
     if (!unit)
-      unit = _ask_create_unit(av[0]);
+      if (!(unit = _ask_create_unit(av[0])))
+	return 1;
     update_code_unit(unit);
   }
   return 0;

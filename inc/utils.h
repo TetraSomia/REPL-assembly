@@ -35,3 +35,6 @@ void assert_single_line(const char *s);
 char *str_clear_sep(char *s);
 bool str_is_empty(const char *s);
 bool str_is_comment(const char *s);
+const char *str_get_operand_start(const char *inst);
+bool str_is_register_name(const char *s);
+bool str_is_symbol_name(const char *s);

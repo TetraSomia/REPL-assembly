@@ -32,6 +32,10 @@ s_code_unit *add_unit(char *name) {
   int pagesize = getpagesize();
   int nbr_units;
 
+  if (str_is_register_name(name) || !str_is_symbol_name(name)) {
+    p_error("Bad code unit name: valid symbol name and not register name\n");
+    return NULL;
+  }
   for (nbr_units = 0; context.units && context.units[nbr_units]; ++nbr_units);
   context.units = xrealloc(context.units,
                            sizeof(s_code_unit*) * (nbr_units + 2));
