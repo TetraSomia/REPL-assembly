@@ -45,10 +45,13 @@ static void _disas_unit(s_code_unit *unit) {
 }
 
 int cmd_disas(int ac, char* const *av) {
-  (void)ac;
-  (void)av;
-  //TODO make multi code_unit compatible
-  printf("Code unit '%s':\n", context.cur_unit->name);
-  _disas_unit(context.cur_unit);
+  s_code_unit *unit = context.cur_unit;
+  if (ac > 0) {
+    unit = unit_find_from_name(av[0]);
+    if (!unit)
+      return p_error("No code unit named '%s'.\n", av[0]);
+  }
+  printf("Code unit '%s':\n", unit->name);
+  _disas_unit(unit);
   return 0;
 }

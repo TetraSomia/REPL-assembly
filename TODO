@@ -1,10 +1,10 @@
 GLOBAL:
-- multi code unit
 - symbols
 - libdl
+- mmap realloc
+- run command multi-unit
 - code loop (probably ncurses)
 
 
 COMMANDS:
-- unit
 - step
