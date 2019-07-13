@@ -1,13 +1,15 @@
 GLOBAL:
 - symbols
-- command unit remove (!)
 - libdl
 - mmap realloc
 - run command multi-unit
 - code loop (probably ncurses)
 
 ERROR HANDLING:
-- code unit name: label, <8bytes regs (eax, al...)
+- code unit name mismatch:
+  * label
+  * < 8 bytes regs (eax, al...)
+  * addresses (0xdeadbeef with sym="deadbeef")
 
 COMMANDS:
 - step

@@ -32,7 +32,7 @@ static s_symbol *_extract_symbols(const char *inst) {
     syms[nbr_syms - 1].dup = xmalloc(syms[nbr_syms - 1].len + 1);
     memcpy(syms[nbr_syms - 1].dup, c, syms[nbr_syms - 1].len);
     syms[nbr_syms - 1].dup[syms[nbr_syms - 1].len] = '\0';
-    c += syms[nbr_syms - 1].len;
+    c += syms[nbr_syms - 1].len - 1;
   }
   return syms;
 }
@@ -56,6 +56,9 @@ int parse_symbols(s_code_unit *unit) {
 	printf("Symbol found: replacing %s by %p\n", syms[i].dup, syms[i].addr);
     }
     i->str_sym = xstrdup(i->str_input);
+    for (int i = 0; syms && syms[i].len; ++i)
+      free(syms[i].dup);
+    free(syms);
   }
   return 0;
 }

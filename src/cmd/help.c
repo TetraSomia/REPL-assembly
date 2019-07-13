@@ -32,11 +32,11 @@ static void _print_global_help() {
        "all: print the whole allocated stack space (stop when reaching 0's)\n\t"
        "frame: if RBP is set correctly, print the section between RBP and RSP\n"
        "\toffset=x: print x lines before and after RSP (default with x=5)\n");
-  puts("unit [<name>]\n\tWithout parameter, shows the units available and "
+  puts("unit [<name> [!]]\n\tWithout parameter, shows the units available and "
        "highlight the active\n\tone. If a code unit name is provided, sets this"
        " unit as active. If the\n\tunit does not exist, ask if we want to"
        " create it. A code unit can be\n\tseen as a new assembly source file or"
-       " as a new function.\n");
+       " as a new function.\n\tUse the '!' operator to remove a code unit.\n");
   puts("Aliases: first letter of the command (except for \'set\', \'stack\' "
        "has priority)");
 }

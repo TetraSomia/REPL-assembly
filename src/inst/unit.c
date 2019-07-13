@@ -2,6 +2,7 @@
 #include <string.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include "repl.h"
 
 s_code_unit *unit_find_from_addr(const void *addr) {
@@ -53,4 +54,22 @@ s_code_unit *add_unit(char *name) {
   add_instruction(new, NULL, "ret");
 
   return new;
+}
+
+void remove_unit(s_code_unit *unit) {
+  bool shift = false;
+
+  if (unit == context.cur_unit)
+    update_code_unit(context.units[0] == unit ?
+		     context.units[1] : context.units[0]);
+  for (int i = 0; context.units[i]; ++i) {
+    if (context.units[i] == unit)
+      shift = true;
+    if (shift)
+      context.units[i] = context.units[i + 1];
+  }
+  free(unit->name);
+  munmap(unit->code, unit->code_max_size);
+  rm_instructions(unit);
+  free(unit);
 }

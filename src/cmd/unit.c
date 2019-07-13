@@ -26,10 +26,21 @@ static s_code_unit *_ask_create_unit(char *name) {
 int cmd_unit(int ac, char* const *av) {
   s_code_unit *unit;
 
-  if (ac < 1)
+  if (ac < 1) {
     _print_units();
-  else {
-    unit = unit_find_from_name(av[0]);
+    return 0;
+  }
+  unit = unit_find_from_name(av[0]);
+  if (ac > 1) {
+    if (strcmp(av[1], "!") != 0)
+      return p_error("'%s' must be \'!\' or shouldn't be provided\n", av[1]);
+    if (!unit)
+      return p_error("'%s' unit not found\n", av[0]);
+    if (context.units[1] == NULL)
+      return p_error("Cannot remove the last unit\n");
+    remove_unit(unit);
+    puts("Code unit removed.");
+  } else {
     if (!unit)
       if (!(unit = _ask_create_unit(av[0])))
 	return 1;

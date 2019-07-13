@@ -43,6 +43,7 @@ s_code_instruction *inst_find_from_unit_and_idx(s_code_unit *unit, int idx);
 s_code_unit *unit_find_from_addr(const void *addr);
 s_code_unit *unit_find_from_name(const char *name);
 s_code_unit *add_unit(char *name);
+void remove_unit(s_code_unit *unit);
 void update_code_unit(s_code_unit *unit);
 
 void set_breakpoint(s_code_instruction *inst);
