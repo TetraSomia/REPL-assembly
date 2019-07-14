@@ -37,8 +37,12 @@ static void _print_global_help() {
        " unit as active. If the\n\tunit does not exist, ask if we want to"
        " create it. A code unit can be\n\tseen as a new assembly source file or"
        " as a new function.\n\tUse the '!' operator to remove a code unit.\n");
-  puts("Aliases: first letter of the command (except for \'set\', \'stack\' "
-       "has priority)");
+  puts("dl [<lib_name> <symbol_name>]\n\t"
+       "Loads dynamically a function called <symbol_name> from the library\n\t"
+       "<lib_name>. If no parameter is provided, prints the list of already\n\t"
+       "loaded symbols with their respective addresses.\n");
+  puts("Aliases: first letter of the command (except for 'set', 'stack' "
+       "has priority,\n\t and 'dl', which is already short).");
 }
 
 int cmd_help(int ac, char* const *av) {
