@@ -39,10 +39,8 @@ void ctx_handle_ctx_update() {
   reset_exec_sighandlers();
   if (!_ctx_running || _ctx_stopped)
     return;
-  if (!_ctx_aborted) {
-    update_code_unit(unit_find_from_addr((void*)get_reg(REG_RIP)));
+  if (!_ctx_aborted)
     puts("Code exited normally");
-  }
   else
     _ctx_aborted = false;
   _ctx_running = false;
