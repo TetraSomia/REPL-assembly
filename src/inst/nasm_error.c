@@ -19,13 +19,13 @@ void parse_nasm_error(s_code_unit *unit, const char *err) {
   for (s_code_instruction *i = unit->insts; i; i = i->next) {
     if (i->label) {
       if (line == index) {
-	fprintf(stderr, "%s (%d: \'%s\')\n", msg, i->index, i->str_input);
+	fprintf(stderr, "%s (%d: \'%s\')\n", msg, i->index, i->str_sym);
 	break;
       }
       index++;
     }
     if (line == index) {
-      fprintf(stderr, "%s in \'%s\'\n", msg, i->str_input);
+      fprintf(stderr, "%s in \'%s\'\n", msg, i->str_sym);
       break;
     }
     index++;

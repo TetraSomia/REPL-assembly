@@ -1,15 +1,22 @@
 GLOBAL:
-- symbols
 - libdl
-- mmap realloc
-- run command multi-unit
+- variables
 - code loop (probably ncurses)
 
+
+LOCAL:
+- mmap realloc
+- run command multi-unit
+- print symbols in disas cmd
+
+
+PROBLEMS:
+- symbols are absolute addresses:
+  cannot call or jmp directly
+
+
 ERROR HANDLING:
-- code unit name mismatch:
-  * label
-  * < 8 bytes regs (eax, al...)
-  * addresses (0xdeadbeef with sym="deadbeef")
+
 
 COMMANDS:
 - step
