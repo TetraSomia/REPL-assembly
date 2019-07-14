@@ -45,15 +45,6 @@ static s_symbol *_extract_symbols(const char *inst) {
   return syms;
 }
 
-static void _parse_code_units(s_symbol *sym) {
-  s_code_unit *unit = unit_find_from_name(sym->dup);
-
-  if (unit) {
-    sym->addr = unit->code;
-    sym->found = true;
-  }
-}
-
 static void _gen_str_sym(s_code_instruction *i, s_symbol *syms, size_t nbr) {
   const size_t address_max_size = 16;
   size_t sym_idx = 0;
@@ -85,6 +76,24 @@ static void _gen_str_sym(s_code_instruction *i, s_symbol *syms, size_t nbr) {
   *str_sym = '\0';
 }
 
+static void _parse_code_units(s_symbol *sym) {
+  s_code_unit *unit = unit_find_from_name(sym->dup);
+
+  if (unit) {
+    sym->addr = unit->code;
+    sym->found = true;
+  }
+}
+
+static void _parse_dynsyms(s_symbol *sym) {
+  for (int i = 0; context.dyn_syms && context.dyn_syms[i].sym; ++i)
+    if (strcmp(context.dyn_syms[i].sym, sym->dup) == 0) {
+      sym->addr = context.dyn_syms[i].addr;
+      sym->found = true;
+      break;
+    }
+}
+
 int parse_symbols(s_code_unit *unit) {
   for (s_code_instruction *i = unit->insts; i; i = i->next) {
     if (i->str_sym)
@@ -93,7 +102,9 @@ int parse_symbols(s_code_unit *unit) {
     size_t nbr_syms;
     for (nbr_syms = 0; syms && syms[nbr_syms].len; ++nbr_syms) {
       _parse_code_units(&syms[nbr_syms]);
-      //TODO parse extern functions and variables
+      if (!syms[nbr_syms].found)
+	_parse_dynsyms(&syms[nbr_syms]);
+      //TODO parse variables
     }
     _gen_str_sym(i, syms, nbr_syms);
     for (int i = 0; syms && syms[i].len; ++i)
