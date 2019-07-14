@@ -8,7 +8,7 @@ CFLAGS	+=	-I$(INC)	\
 		-Wall -Wextra	\
 		-g
 
-LDFLAGS	+=	-lreadline
+LDFLAGS	+=	-lreadline -ldl
 
 SRC_ROOT	=	./src/
 
@@ -53,6 +53,7 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_CMD)set.c		\
 		$(SRC_CMD)stack.c	\
 		$(SRC_CMD)unit.c	\
+		$(SRC_CMD)dl.c		\
 		$(SRC_CTX)switch.c	\
 		$(SRC_CTX)sig_handler.c
 

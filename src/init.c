@@ -15,6 +15,13 @@ static void _free_context() {
     free(context.units[i]);
   }
   free(context.units);
+
+  for (int i = 0; context.dyn_syms && context.dyn_syms[i].sym; ++i) {
+    free(context.dyn_syms[i].sym);
+    free(context.dyn_syms[i].lib);
+  }
+  free(context.dyn_syms);
+
   free(context.stack);
   free(context.sighandler_stack);
 }
@@ -43,6 +50,8 @@ void init_context() {
   add_instruction(context.cur_unit, inst_find_from_idx(2), "pop rax");
   set_breakpoint(inst_find_from_idx(2));
   set_breakpoint(inst_find_from_idx(3));
+
+  context.dyn_syms = NULL;
   
   atexit(&_free_context);
 }

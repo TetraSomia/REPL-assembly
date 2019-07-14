@@ -23,7 +23,8 @@ static struct {
      {"print", "p", &cmd_print},
      {"set", "set", &cmd_set},
      {"unit", "u", &cmd_unit},
-     {"stack", "s", &cmd_stack}};
+     {"stack", "s", &cmd_stack},
+     {"dl", "dl", &cmd_dl}};
 
 static char **_tokenize_args(const char *line, size_t line_size, int *ac_ptr) {
   char tmp_line[line_size];
