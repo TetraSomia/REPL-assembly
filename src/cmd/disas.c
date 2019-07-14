@@ -20,6 +20,12 @@ static const char *_is_jump_to_label(const s_code_instruction *insts,
   return NULL;
 }
 
+static const char *_is_symbol(const s_code_instruction *inst) {
+  if (strcmp(inst->str_input, inst->str_sym) == 0)
+    return NULL;
+  return str_get_operand_start(inst->str_input);
+}
+
 static void _disas_unit(s_code_unit *unit) {
   void *rip = NULL;
 
@@ -36,9 +42,11 @@ static void _disas_unit(s_code_unit *unit) {
 	     i->address, i->str_gen);
     else
       printf("%d:\t%s %p\t%s", i->index, prefix, i->address, i->str_gen);
-    const char *label = _is_jump_to_label(unit->insts, i);
-    if (label)
-      printf(" (%s)\n", label);
+    const char *extrinfo = _is_symbol(i);
+    if (!extrinfo)
+      extrinfo = _is_jump_to_label(unit->insts, i);
+    if (extrinfo)
+      printf(" (%s)\n", extrinfo);
     else
       printf("\n");
   }

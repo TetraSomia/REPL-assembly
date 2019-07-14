@@ -7,7 +7,6 @@ GLOBAL:
 LOCAL:
 - mmap realloc
 - run command multi-unit
-- print symbols in disas cmd
 
 
 PROBLEMS:
