@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "repl.h"
+#include "getters.h"
 #include "context_switch.h"
 
 static ucontext_t _repl_ctx, _exec_ctx, _breakpoint_ctx;
@@ -38,8 +39,10 @@ void ctx_handle_ctx_update() {
   reset_exec_sighandlers();
   if (!_ctx_running || _ctx_stopped)
     return;
-  if (!_ctx_aborted)
-    puts("Code exited normally");    
+  if (!_ctx_aborted) {
+    update_code_unit(unit_find_from_addr((void*)get_reg(REG_RIP)));
+    puts("Code exited normally");
+  }
   else
     _ctx_aborted = false;
   _ctx_running = false;

@@ -23,13 +23,13 @@ static void _breakpoint_handler(int sig, siginfo_t *info, void *raw_context) {
     _reset_breakpoint(inst);
     return;
   }
-  update_code_unit(unit_find_from_addr((void*)get_reg(REG_RIP)));
   if (sig == SIGTRAP) {
     *get_reg_ptr(REG_RIP) -= 1; //reset RIP to inst first byte
     printf("Breakpoint hit (%p)\n", (void*)get_reg(REG_RIP));
   }
   else
     fprintf(stderr, "Execution stopped manually\n");
+  update_code_unit(unit_find_from_addr((void*)get_reg(REG_RIP)));
   ctx_resume_repl();
   if (sig == SIGTRAP) {
     inst = inst_find_from_addr_all_units((void*)get_reg(REG_RIP));

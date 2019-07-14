@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 #include "repl.h"
 #include "getters.h"
 
@@ -14,9 +15,13 @@ int cmd_breakpoint(int ac, char* const *av) {
     return p_error("\'%s\' cannot be parsed into an index or address\n", av[0]);
   if ((inst = get_inst_from_parsing(&inst_v)) == NULL)
     return 1;
-  if (ac == 1)
+  if (ac == 1) {
     set_breakpoint(inst);
-  else
+    puts("Breakpoint set.");
+  }
+  else {
     reset_breakpoint(inst);
+    puts("Breakpoint removed.");
+  }
   return 0;
 }
