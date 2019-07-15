@@ -1,9 +1,8 @@
 #include <stdio.h>
 
 static void _print_global_help() {
-  puts("Here are the commands available:\n");
-  puts("help [<cmd>]\n\tPrint this message, give further information"
-       "on the 'cmd'\n\tcommand if specified.\n");
+  puts("Here are the available commands:\n");
+  puts("help\n\tPrint this message.\n");
   puts("run\n\tStart and run the assembly code.\n");
   puts("continue\n\tResume execution after a breakpoint hit.\n");
   puts("disas\n\tDisassemble the code of the current code unit.\n");
