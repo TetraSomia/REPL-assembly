@@ -50,4 +50,4 @@ Three signals are caught when raised from the assembly code or within critical s
 If the execution is stuck into an assembly infinite loop, SIGINT is also handled, so you can CTRL+C to stop the execution.
 The stack allocated to the user assembly code can be freely corrupted without risking to crash the REPL.
 ### Crash possibility: warning
-Because the user assembly code is run within the same thread than the REPL, modification of REPL-owned memory, or calling some system calls can lead to the REPL crash.
+Because of the user assembly code being run within the same thread than the REPL, modification of REPL-owned memory, or calling some system calls can lead to the REPL crash.
