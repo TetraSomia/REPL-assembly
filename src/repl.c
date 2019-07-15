@@ -24,7 +24,8 @@ static struct {
      {"set", "set", &cmd_set},
      {"unit", "u", &cmd_unit},
      {"stack", "s", &cmd_stack},
-     {"dl", "dl", &cmd_dl}};
+     {"dl", "dl", &cmd_dl},
+     {"array", "a", &cmd_array}};
 
 static char **_tokenize_args(const char *line, size_t line_size, int *ac_ptr) {
   char tmp_line[line_size];

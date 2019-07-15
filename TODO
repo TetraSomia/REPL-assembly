@@ -1,6 +1,5 @@
 GLOBAL:
-- variables
-- code loop (probably ncurses)
+- ncurses code editor
 
 
 LOCAL:
@@ -14,6 +13,7 @@ PROBLEMS:
 
 
 ERROR HANDLING:
+- check for any symbol (unit, dyn_sym, array) name collision
 
 
 COMMANDS:

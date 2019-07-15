@@ -54,6 +54,7 @@ SRCS	=	$(SRC_ROOT)main.c	\
 		$(SRC_CMD)stack.c	\
 		$(SRC_CMD)unit.c	\
 		$(SRC_CMD)dl.c		\
+		$(SRC_CMD)array.c	\
 		$(SRC_CTX)switch.c	\
 		$(SRC_CTX)sig_handler.c
 

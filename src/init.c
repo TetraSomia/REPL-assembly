@@ -22,6 +22,12 @@ static void _free_context() {
   }
   free(context.dyn_syms);
 
+  for (int i = 0; context.arrays && context.arrays[i].name; ++i) {
+    free(context.arrays[i].name);
+    free(context.arrays[i].array);
+  }
+  free(context.arrays);
+
   free(context.stack);
   free(context.sighandler_stack);
 }
@@ -52,6 +58,7 @@ void init_context() {
   set_breakpoint(inst_find_from_idx(3));
 
   context.dyn_syms = NULL;
+  context.arrays = NULL;
   
   atexit(&_free_context);
 }

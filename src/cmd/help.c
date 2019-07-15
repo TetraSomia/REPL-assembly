@@ -40,6 +40,10 @@ static void _print_global_help() {
        "Loads dynamically a function called <symbol_name> from the library\n\t"
        "<lib_name>. If no parameter is provided, prints the list of already\n\t"
        "loaded symbols with their respective addresses.\n");
+  puts("array [<name> [<size>]]\n\t"
+       "Allocate a null-initialized array of size <size> named <name>, or a\n\t"
+       "string if there is no size provided. If no argument is provided,\n\t"
+       "list all arrays with their respective name, address and content.\n");
   puts("Aliases: first letter of the command (except for 'set', 'stack' "
        "has priority,\n\t and 'dl', which is already short).");
 }
