@@ -26,6 +26,7 @@ The ``help`` command will give you more information about those commands and how
 * The ``inst `` command can be used to create, edit and remove instructions.
 * The ``label`` command allows you to create labels into the code to be able to jump at different location of the code easily.
 * The ``unit`` command allows you to create "code units". A code unit can be seen as a source file. Labels from one code unit are locals, and are not accessible by another unit, the only external symbol is the name of the unit, that can be used to call a unit from another one.
+Most commands affect and refer to the "current" code unit, so this command also permits to switch to another code unit. Hitting a breakpoint in a different code unit will automatically set it as the current one.
 #### Execution control
 * The ``run`` command will start the execution of the "main" code unit.
 * The ``breakpoint`` command allows to set and reset breakpoints on different instructions to stop the execution flow and to get back to the command interpreter.
