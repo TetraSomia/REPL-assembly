@@ -85,6 +85,15 @@ static void _parse_code_units(s_symbol *sym) {
   }
 }
 
+static void _parse_arrays(s_symbol *sym) {
+  for (int i = 0; context.arrays && context.arrays[i].name; ++i)
+    if (strcmp(context.arrays[i].name, sym->dup) == 0) {
+      sym->addr = context.arrays[i].array;
+      sym->found = true;
+      break;
+    }
+}
+
 static void _parse_dynsyms(s_symbol *sym) {
   for (int i = 0; context.dyn_syms && context.dyn_syms[i].sym; ++i)
     if (strcmp(context.dyn_syms[i].sym, sym->dup) == 0) {
@@ -103,8 +112,9 @@ int parse_symbols(s_code_unit *unit) {
     for (nbr_syms = 0; syms && syms[nbr_syms].len; ++nbr_syms) {
       _parse_code_units(&syms[nbr_syms]);
       if (!syms[nbr_syms].found)
+	_parse_arrays(&syms[nbr_syms]);
+      if (!syms[nbr_syms].found)
 	_parse_dynsyms(&syms[nbr_syms]);
-      //TODO parse variables
     }
     _gen_str_sym(i, syms, nbr_syms);
     for (int i = 0; syms && syms[i].len; ++i)
