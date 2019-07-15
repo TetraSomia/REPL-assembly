@@ -1,18 +1,12 @@
 #include <stdio.h>
-//#include "test.h"
 #include "repl.h"
-
-/*
-static void _run_tests() {
-  test_assembly();
-}
-*/
+#include "commands.h"
 
 int main(int ac, char **av)
 {
   (void)av;
   if (ac > 1) {
-    //_run_tests();
+    cmd_help(0, NULL);
     return 0;
   }
   init_context();
