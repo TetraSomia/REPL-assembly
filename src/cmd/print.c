@@ -1,7 +1,17 @@
 #include <stdio.h>
+#include <string.h>
 #include "repl.h"
 #include "getters.h"
 #include "print.h"
+
+static int _print_regs() {
+  if (!is_running())
+    return p_error("Cannot print registers: code isn't running\n");
+  puts("Printing registers content:");
+  for (e_register r = REG_FIRST; r < REG_LAST; ++r)
+    print_reg(r, PRINT_FMT_HEX, 8, 1);
+  return 0;
+}
 
 int cmd_print(int ac, char* const *av) {
   char *deref_val;
@@ -12,7 +22,9 @@ int cmd_print(int ac, char* const *av) {
   size_t iter = 1;
 
   if (ac < 1)
-    return p_error("Please specify a location (register or address)\n");
+    return p_error("Please specify a location (register(s) or address)\n");
+  if (strcmp(av[0], "regs") == 0)
+    return _print_regs();
   deref_val = parse_dereferencing(av[0], &nbr_deref);
   if (parse_str_to_val(deref_val, &data) != 0 || data.type == PARSED_IDX)
     return p_error("\'%s\' cannot be parsed into a register or address\n",

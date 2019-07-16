@@ -5,6 +5,7 @@ GLOBAL:
 LOCAL:
 - mmap realloc
 - run command multi-unit
+- autocomplete command name
 
 
 PROBLEMS:
