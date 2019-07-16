@@ -30,7 +30,8 @@ Most commands affect and refer to the "current" code unit, so this command also 
 #### Execution control
 * The ``run`` command will start the execution of the "main" code unit.
 * The ``breakpoint`` command allows to set and reset breakpoints on different instructions to stop the execution flow and to get back to the command interpreter.
-* The ``cont`` command resumes the execution after a breakpoint hit.
+* The ``cont`` command resumes a stopped execution.
+* The ``step`` command executes one user instruction.
 #### Context exploration
 * The ``disas`` command shows the assembly code of a particular unit with additional information such as the addresses of instructions, the RIP and breakpoint locations, and the corresponding symbol name of operand addresses.
 * The ``print`` command prints the content of a register or at a particular address, both can also be dereferenced multiple times. Formats (string, hexadecimal or decimal values), word size (1/2/4/8) and the number of iterations can also be provided.
