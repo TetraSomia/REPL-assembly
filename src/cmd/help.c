@@ -4,7 +4,8 @@ static void _print_global_help() {
   puts("Here are the available commands:\n");
   puts("help\n\tPrint this message.\n");
   puts("run\n\tStart and run the assembly code.\n");
-  puts("continue\n\tResume execution after a breakpoint hit.\n");
+  puts("continue\n\tResume execution.\n");
+  puts("step\n\tResume execution for only one instruction.\n");
   puts("disas\n\tDisassemble the code of the current code unit.\n");
   puts("breakpoint (<index> | <addr>) [!]\n\tAdd or remove a breakpoint.\n");
   puts("label (<index> | <addr>) [!]\n\tAdd or remove a label.\n");
@@ -45,8 +46,8 @@ static void _print_global_help() {
        "Allocate a null-initialized array of size <size> named <name>, or a\n\t"
        "string if there is no size provided. If no argument is provided,\n\t"
        "list all arrays with their respective name, address and content.\n");
-  puts("Aliases: first letter of the command (except for 'set', 'stack' "
-       "has priority,\n\t and 'dl', which is already short).");
+  puts("Aliases: first letter of the command (except for 'set' and 'stack', "
+       "'step'\n\t has priority, and 'dl', which is already short).");
 }
 
 int cmd_help(int ac, char* const *av) {

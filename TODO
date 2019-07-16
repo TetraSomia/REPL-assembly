@@ -9,17 +9,14 @@ LOCAL:
 
 TO_REMOVE:
 - 'dump' debug command
-- Makefile -g option
 
 
 PROBLEMS:
 - symbols are absolute addresses:
   cannot call or jmp directly
+- valgrind does not handle the TRAP_FLAG in REG_EFL
 
 
 ERROR HANDLING:
 - check for any symbol (unit, dyn_sym, array) name collision
-
-
-COMMANDS:
-- step
+- do not abort on bad rip (sig_handler.c)

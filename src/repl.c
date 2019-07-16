@@ -23,8 +23,9 @@ static struct {
      {"print", "p", &cmd_print},
      {"set", "set", &cmd_set},
      {"unit", "u", &cmd_unit},
-     {"stack", "s", &cmd_stack},
+     {"stack", "stack", &cmd_stack},
      {"dl", "dl", &cmd_dl},
+     {"step", "s", &cmd_step},
      {"array", "a", &cmd_array}};
 
 static char *_autocomplete_gen(const char *text, int state) {
@@ -106,5 +107,6 @@ void repl() {
     // else if (cmd_ret != 0) //Command failed
   }
   free(line);
+  rl_clear_history();
   puts("exiting...");
 }

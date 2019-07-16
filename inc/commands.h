@@ -16,3 +16,4 @@ int cmd_stack(int ac, char* const *av);
 int cmd_unit(int ac, char* const *av);
 int cmd_dl(int ac, char* const *av);
 int cmd_array(int ac, char* const *av);
+int cmd_step(int ac, char* const *av);
