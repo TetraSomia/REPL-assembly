@@ -27,6 +27,27 @@ static struct {
      {"dl", "dl", &cmd_dl},
      {"array", "a", &cmd_array}};
 
+static char *_autocomplete_gen(const char *text, int state) {
+  static size_t list_index, len;
+  
+  if (!state) {
+    list_index = 0;
+    len = strlen(text);
+  }
+  while (list_index++ < sizeof(_cmds) / sizeof(*_cmds))
+    if (strncmp(_cmds[list_index-1].name, text, len) == 0)
+      return xstrdup(_cmds[list_index-1].name);
+  return NULL;
+}
+
+static char **_autocomplete(const char *text, int start, int end) {
+  (void)end;
+  rl_attempted_completion_over = 1;
+  if (start != 0)
+    return NULL;
+  return rl_completion_matches(text, _autocomplete_gen);
+}
+
 static char **_tokenize_args(const char *line, size_t line_size, int *ac_ptr) {
   char tmp_line[line_size];
   char *tmp_tok;
@@ -61,7 +82,7 @@ void repl() {
   int ac;
   int cmd_ret;
 
-  rl_bind_key('\t', rl_insert);
+  rl_attempted_completion_function = _autocomplete;
   if (getcontext(ctx_get_repl_ctx()) != 0)
     fatal_libc_err("getcontext(&_repl_ctx) failed\n");
   ctx_handle_ctx_update();

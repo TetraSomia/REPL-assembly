@@ -5,7 +5,11 @@ GLOBAL:
 LOCAL:
 - mmap realloc
 - run command multi-unit
-- autocomplete command name
+
+
+TO_REMOVE:
+- 'dump' debug command
+- Makefile -g option
 
 
 PROBLEMS:
