@@ -40,13 +40,14 @@ ucontext_t *ctx_get_repl_ctx() {
 
 void ctx_handle_ctx_update() {
   reset_exec_sighandlers();
-  if (!_ctx_running || _ctx_stopped)
+  if (!_ctx_running || (_ctx_stopped && !_ctx_aborted))
     return;
   if (!_ctx_aborted)
     puts("Code exited normally");
   else
     _ctx_aborted = false;
   _ctx_running = false;
+  _ctx_stopped = false;
   context.exec_ctx = NULL;
 }
 
