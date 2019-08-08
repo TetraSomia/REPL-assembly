@@ -5,7 +5,8 @@ CC	=	gcc
 INC	=	./inc/
 
 CFLAGS	+=	-I$(INC)	\
-		-Wall -Wextra
+		-Wall -Wextra	\
+		-O0
 
 LDFLAGS	+=	-lreadline -ldl
 

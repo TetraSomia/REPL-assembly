@@ -1,5 +1,6 @@
 GLOBAL:
 - ncurses code editor
+- save state
 
 
 LOCAL:
