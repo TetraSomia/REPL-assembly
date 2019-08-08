@@ -5,7 +5,7 @@
 #include "getters.h"
 #include "context_switch.h"
 
-static ucontext_t _repl_ctx, _exec_ctx, _breakpoint_ctx;
+static ucontext_t _repl_ctx, _exec_ctx;
 static bool _ctx_running = false;
 static bool _ctx_stopped = false;
 static bool _ctx_aborted = false;
@@ -13,8 +13,8 @@ static bool _step = false;
 
 bool ctx_resume_repl() {
   _ctx_stopped = true;
-  if (swapcontext(&_breakpoint_ctx, &_repl_ctx) != 0)
-    fatal_libc_err("swapcontext(&_breakpoint_ctx, &_repl_ctx) failed\n");
+  if (swapcontext(&_exec_ctx, &_repl_ctx) != 0)
+    fatal_libc_err("swapcontext(&_exec_ctx, &_repl_ctx) failed\n");
   _ctx_stopped = false;
   return _step;
 }
@@ -23,8 +23,8 @@ void ctx_resume_exec(bool step) {
   if (!_ctx_running)
     return;
   _step = step;
-  if (setcontext(&_breakpoint_ctx) != 0)
-    fatal_libc_err("setcontext(&_breakpoint_ctx) failed\n");
+  if (setcontext(&_exec_ctx) != 0)
+    fatal_libc_err("setcontext(&_exec_ctx) failed\n");
 }
 
 void ctx_abort_exec() {
