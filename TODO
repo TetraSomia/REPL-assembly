@@ -9,7 +9,7 @@ LOCAL:
 - mmap realloc
 - run command multi-unit
 - interpret \t and \n when declaring a string
-
+- print xmm registers
 
 TO_REMOVE:
 - 'dump' debug command
