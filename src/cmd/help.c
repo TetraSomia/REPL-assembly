@@ -6,7 +6,9 @@ static void _print_global_help() {
   puts("run\n\tStart and run the assembly code.\n");
   puts("continue\n\tResume execution.\n");
   puts("step\n\tResume execution for only one instruction.\n");
-  puts("disas\n\tDisassemble the code of the current code unit.\n");
+  puts("disas [<unit_name>]\n\tDisassemble the code of the code unit specified"
+       " as parameter,\n\tor using the current one if no parameter"
+       " is given.\n");
   puts("breakpoint (<index> | <addr>) [!]\n\tAdd or remove a breakpoint.\n");
   puts("label (<index> | <addr>) [!]\n\tAdd or remove a label.\n");
   puts("inst (add | rm | edit) [<index> | <addr>]\n\tAdd, remove, or edit a "
