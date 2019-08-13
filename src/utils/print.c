@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include "print.h"
+#include "context_switch.h"
 
 e_print_fmt print_parse_format(const char *s) {
   if (strlen(s) > 1)
@@ -47,20 +48,22 @@ static void _print_s(const char *s) {
 }
 
 static void _dump_int(uint64_t *addr, char wordsize, bool hex) {
+  set_exec_sighandlers();
   switch (wordsize) {
   case 1:
-    printf(hex ? "0x%02x" : "%d", (uint8_t)*addr);
+    printf(hex ? "0x%02x" : "%d", *(uint8_t*)addr);
     break;
   case 2:
-    printf(hex ? "0x%04x" : "%d", (uint16_t)*addr);
+    printf(hex ? "0x%04x" : "%d", *(uint16_t*)addr);
     break;
   case 4:
-    printf(hex ? "0x%08x" : "%d", (uint32_t)*addr);
+    printf(hex ? "0x%08x" : "%d", *(uint32_t*)addr);
     break;
   case 8:
-    printf(hex ? "0x%016lx" : "%ld", (uint64_t)*addr);
+    printf(hex ? "0x%016lx" : "%ld", *(uint64_t*)addr);
     break;
   }
+  reset_exec_sighandlers();
 }
 
 static void _print_int(uint64_t *addr, char wordsize, size_t iter, bool hex) {

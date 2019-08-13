@@ -127,6 +127,7 @@ static void _crash_handler(int sig, siginfo_t *info, void *raw_context) {
 	    {SIGSEGV, "SIGSEGV", sys_siglist[SIGSEGV], code_segv}};
 
   context.exec_ctx = (ucontext_t*)raw_context;
+  fflush(stdout);
   update_code_unit(unit_find_from_addr((void*)get_reg(REG_RIP)));
   for (size_t i = 0; i < sizeof(strs) / sizeof(*strs); ++i)
     if (sig == strs[i].signum) {
