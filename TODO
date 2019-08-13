@@ -1,7 +1,8 @@
 GLOBAL:
 - ncurses code editor
 - save state
-- run command with arguments
+- 'run' command with arguments
+- disassemble and step into non-user code
 
 
 LOCAL:
