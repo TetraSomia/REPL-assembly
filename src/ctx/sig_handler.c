@@ -48,7 +48,7 @@ static void _trap_flag_handler(int sig, siginfo_t *info, void *raw_context) {
 
   if (!(get_reg(REG_EFL) & TRAP_FLAG_MASK))
     fatal_err("Assert failed: _trap_flag_handler: flag not set\n");
-  *get_reg_ptr(REG_EFL) ^= TRAP_FLAG_MASK;
+  *get_reg_ptr(REG_EFL) &= ~TRAP_FLAG_MASK;
   if (!_prev_inst)
     fatal_err("Assert failed: _trap_flag_handler: _prev_inst == NULL\n");
   if (_prev_inst->breakpoint)
@@ -164,6 +164,7 @@ void reset_exec_sighandlers() {
   signal(SIGFPE, SIG_DFL);
   signal(SIGILL, SIG_DFL);
   signal(SIGSEGV, SIG_DFL);
+  _sigtrap_handler = &_breakpoint_handler;
 }
 
 void set_exec_sighandlers() {
