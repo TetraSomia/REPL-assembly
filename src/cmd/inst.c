@@ -8,7 +8,7 @@
 static void _adjust_RIP(void *addr, size_t old_size, size_t new_size) {
   uint64_t *rip = get_reg_ptr(REG_RIP);
 
-  if (!rip || unit_find_from_addr(rip) != context.cur_unit)
+  if (!rip || unit_find_from_addr((void*)*rip) != context.cur_unit)
     return;
   if ((void*)*rip > addr)
     *rip += new_size - old_size;
